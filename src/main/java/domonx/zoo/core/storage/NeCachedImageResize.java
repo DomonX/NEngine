@@ -8,6 +8,8 @@ import java.util.HashMap;
 
 import javax.imageio.ImageIO;
 
+import domonx.zoo.core.configuration.NeConfiguration;
+
 public class NeCachedImageResize implements ImageObserver, IStorageUnlinkListener{
 	
 	private HashMap<Double, NeCachedImage> images;
@@ -28,16 +30,22 @@ public class NeCachedImageResize implements ImageObserver, IStorageUnlinkListene
 		this.owner = owner;
 		images = new HashMap<Double, NeCachedImage>();
 		try {
-			original = ImageIO.read(new File(src));
+			original = ImageIO.read(new File(NeConfiguration.getPath()+"\\"+src));
 			originalWidth = original.getWidth(this);
 			originalHeight = original.getHeight(this);
 			valid  = true;
 		} catch (IOException e) {
+			if(NeConfiguration.isDeveloperMode()) {
+				System.out.println("Couldnt find " + NeConfiguration.getPath()+"\\"+src);
+			}
 			valid = false;
 		}
 	}
 	
 	public NeCachedImage link(double scale) {
+		if(!valid) {
+			return null;
+		}
 		NeCachedImage temp = images.get(scale);
 		if(temp != null) {
 			return temp;

@@ -3,62 +3,37 @@ package domonx.zoo.core.entity;
 import java.awt.Color;
 import java.awt.Graphics;
 
+import domonx.zoo.core.configuration.NeConfiguration;
 import domonx.zoo.core.configuration.NeConstantsRegistry;
 import domonx.zoo.core.controller.INeController;
-import domonx.zoo.core.entity.container.INeContainer;
-import domonx.zoo.core.storage.NeImageStorage;
+import domonx.zoo.core.storage.INeImageStorage;
 import domonx.zoo.core.util.NeEntityUtils;
 
-public abstract class NeEntity implements INeEntity {
+public abstract class NeEntity extends NeBaseEntity {
 
-	protected NeImageStorage store = null;
-
-	protected INeController controller = null;
-
-	private double x = 0;
-	private double y = 0;
+	private double onScreenX = 0;
+	private double onScreenY = 0;
+	
+	private double realX = 0;
+	private double realY = 0;
 
 	private double width = 0;
 	private double height = 0;
 
 	private double scale = 1;
 
-	private boolean controllerActive = true;
-
-	private INeContainer owner = null;
-
-	private String GUID;
-
-	private String GUIDPath;
-
-	@Override
-	public INeContainer getOwner() {
-		return owner;
-	}
-
-	@Override
-	public void setOwner(INeContainer owner) {
-		this.owner = owner;
-		this.GUIDPath = this.owner.getGUIDPath().concat("/").concat(GUID);
-		setScale(owner.getScale());
-		move(getX(), getY());
-	}
-
-	public NeEntity(NeImageStorage store, String GUID) {
-		super();
-		this.GUID = GUID;
-		this.GUIDPath = GUID;
-		this.store = store;
+	public NeEntity(String GUID) {
+		super(GUID);
 	}
 
 	@Override
 	public double getX() {
-		return x * scale;
+		return onScreenX;
 	}
 
 	@Override
 	public double getY() {
-		return y * scale;
+		return onScreenY;
 	}
 
 	@Override
@@ -82,6 +57,24 @@ public abstract class NeEntity implements INeEntity {
 		this.height = height * scale;
 		reload();
 	}
+	
+	@Override
+	public void fit() {
+		double ownerRealHeight = getOwner().getHeight() / getOwner().getScale();
+		double ownerRealWidth = getOwner().getWidth() / getOwner().getScale();
+		double entityHeight = getHeight();
+		double entityWidth = getWidth();
+		if(entityHeight == 0 || entityWidth == 0) {
+			setHeight(ownerRealHeight);
+			setWidth(ownerRealWidth);
+			return;
+		}
+		double heightScale = ownerRealHeight / entityHeight;
+		double widthScale = ownerRealWidth / entityWidth;
+		double realScale = heightScale < widthScale ? heightScale : widthScale;
+		setHeight(entityHeight * realScale);
+		setWidth(entityWidth * realScale);
+	}
 
 	@Override
 	public void setScale(double scale) {
@@ -99,28 +92,39 @@ public abstract class NeEntity implements INeEntity {
 
 	@Override
 	public void move(double x, double y) {
-		this.x = x / scale;
-		this.y = y / scale;
-		if (owner == null) {
-			return;
+		this.onScreenX = x;
+		this.onScreenY = y;
+		recalculateRealPosition();
+	}
+	
+	public void moveRelatively(double x, double y) {
+		this.realX = x;
+		this.realY = y;
+		recalculateOnScreenPosition();
+	}
+	
+	@Override
+	public void recalculateOnScreenPosition() {
+		double shiftX = 0;
+		double shiftY = 0;
+		if(getOwner() != null) {
+			shiftX = getOwner().getX();
+			shiftY = getOwner().getY(); 
 		}
-		this.x += owner.getX();
-		this.y += owner.getY();
+		onScreenX = (this.realX * scale) + shiftX;
+		onScreenY = (this.realY * scale) + shiftY;
 	}
-
+	
 	@Override
-	public void connectController(INeController controller) {
-		this.controller = controller;
-	}
-
-	@Override
-	public boolean isControllerActive() {
-		return controllerActive;
-	}
-
-	@Override
-	public void setControllerActive(boolean controllerActive) {
-		this.controllerActive = controllerActive;
+	public void recalculateRealPosition() {
+		double shiftX = 0;
+		double shiftY = 0;
+		if(getOwner() != null) {
+			shiftX = getOwner().getX();
+			shiftY = getOwner().getY();
+		}
+		this.realX = (this.onScreenX - shiftX) / scale;
+		this.realY = (this.onScreenY - shiftY) / scale;
 	}
 
 	@Override
@@ -130,27 +134,14 @@ public abstract class NeEntity implements INeEntity {
 
 	@Override
 	public void renderDev(Graphics g) {
-		g.setColor(Color.RED);
-		g.drawRect((int) (getX()), (int) (getY()), (int) (getWidth() - 1), (int) (getHeight() - 1));
-	}
-
-	protected abstract void reload();
-
-	@Override
-	public String getGUID() {
-		return GUID;
-	}
-
-	@Override
-	public String getGUIDPath() {
-		return GUIDPath;
-	}
-
-	@Override
-	public void tick(int hertz) {
-		if(controller != null) {
-			controller.tick(hertz);
+		if(!NeConfiguration.isDeveloperMode()) {
+			return;
 		}
+		g.setColor(Color.WHITE);
+		g.drawRect((int) (getX()), (int) (getY()), (int) (getWidth() - 1), (int) (getHeight() - 1));
+		g.drawString(getGUID(), (int)(getX()), (int)(getY() + NeConstantsRegistry.baseFont.getSize()));
 	}
+	
+	protected abstract void reload();
 
 }

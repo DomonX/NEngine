@@ -8,14 +8,23 @@ import javax.swing.JFrame;
 import domonx.zoo.core.configuration.NeConfiguration;
 import domonx.zoo.core.configuration.NeConstantsRegistry;
 
-public class NeSyncFrame extends JFrame implements KeyListener {
+public class NeGame implements KeyListener {
 
-	protected int lastFps = 0;
+	public JFrame window;
 	private long currentNanoTimeFps = 0;
 	private long currentNanoTimeHertz = 0;
 	private long currentNanoTimeCounter = 0;
 	private int currentFps = 0;
-	private static final long serialVersionUID = 8590211693728083963L;
+	protected NeGameDataStorage data;
+	
+	public NeGame(JFrame window) {
+		this.window = window;
+		data = new NeGameDataStorage();
+		NeConfiguration.loadConfigTo(window);
+		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		window.setLocationRelativeTo(null);
+		window.addKeyListener(this);
+	}
 
 	@Override
 	public void keyTyped(KeyEvent e) {
@@ -33,10 +42,6 @@ public class NeSyncFrame extends JFrame implements KeyListener {
 	public void keyReleased(KeyEvent e) {
 		
 	}
-	
-	public int getLastFps() {
-		return lastFps;
-	}
 
 	public void enterMainLoop() {
 		long lastNanoTime = System.nanoTime();
@@ -51,17 +56,14 @@ public class NeSyncFrame extends JFrame implements KeyListener {
 		}
 	}
 
-	protected NeSyncFrame() {
-		NeConfiguration.loadConfigTo(this);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setLocationRelativeTo(null);
-		addKeyListener(this);
+	protected void updateScreen() {
+		
+	}
+	
+	protected void updateGame(int hertzPassed) {
+		
 	}
 
-	protected void updateScreen() {
-	}
-	protected void updateGame(int hertzPassed) {
-	}
 
 	private void mainLoop() {
 		if (currentNanoTimeFps > NeConfiguration.getFpsTime() || !NeConfiguration.isFpsCapped()) {
@@ -75,7 +77,7 @@ public class NeSyncFrame extends JFrame implements KeyListener {
 			currentNanoTimeHertz -= fullHertzPassed * NeConfiguration.getHertzTime();
 		}
 		if (currentNanoTimeCounter > NeConstantsRegistry.SECOND_IN_NANO) {
-			lastFps = currentFps;
+			data.setLastFps(currentFps);
 			currentNanoTimeCounter -= NeConstantsRegistry.SECOND_IN_NANO;
 			currentFps = 0;
 		}

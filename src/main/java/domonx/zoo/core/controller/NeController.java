@@ -13,13 +13,15 @@ public abstract class NeController implements INeController{
 	
 	protected NeEntity entity;
 	protected INeActionListener listener;
+	
+	protected boolean isMovePermitted;
 
 	public NeController(NeEntity entity, JFrame informer) {
 		super();
 		this.entity = entity;
 		entity.connectController(this);
 		this.informer = informer;
-		addInformer(informer);
+		addInformer(informer); 
 	}
 
 	@Override
@@ -37,13 +39,14 @@ public abstract class NeController implements INeController{
 		}
 		entity.move(x, y);		
 	}
-	
+	@Override
 	public void tick(int hertz) {
 		
 	}
-	
-	protected void returnOldPosition() {
+	@Override
+	public void returnOldPosition() {
 		move(oldX, oldY);
 	}
+
 
 }

@@ -3,7 +3,7 @@ package domonx.zoo.core.storage;
 import java.awt.Dimension;
 import java.util.HashMap;
 
-public class NeImageStorage implements IStorageUnlinkListener {
+public class NeImageStorage implements IStorageUnlinkListener, INeImageStorage {
 	
 	private HashMap<String, NeCachedImageResize> images;
 	
@@ -11,6 +11,7 @@ public class NeImageStorage implements IStorageUnlinkListener {
 		images = new HashMap<String, NeCachedImageResize>();
 	}
 	
+	@Override
 	public NeCachedImage get(String key, double scale) {
 		NeCachedImageResize temp = images.get(key);
 		if(temp == null) {
@@ -20,6 +21,7 @@ public class NeImageStorage implements IStorageUnlinkListener {
 		return temp.link(scale);
 	}
 	
+	@Override
 	public Dimension getSize(String key) {
 		Dimension size = null;
 		NeCachedImageResize temp = images.get(key);
@@ -35,6 +37,7 @@ public class NeImageStorage implements IStorageUnlinkListener {
 		return size;
 	}
 	
+	@Override
 	public void clear() {
 		images.forEach((String key, NeCachedImageResize i) -> {
 			i.clear();
@@ -42,6 +45,7 @@ public class NeImageStorage implements IStorageUnlinkListener {
 		images.clear();
 	}
 	
+	@Override
 	public void hardCache(String key, boolean mode) {
 		NeCachedImageResize temp = images.get(key);
 		if(temp == null) {

@@ -3,6 +3,8 @@ package domonx.zoo.core.entity;
 import java.awt.Dimension;
 import java.awt.Graphics;
 
+import domonx.zoo.core.configuration.NeConfiguration;
+import domonx.zoo.core.storage.INeImageStorage;
 import domonx.zoo.core.storage.NeCachedImage;
 import domonx.zoo.core.storage.NeImageStorage;
 
@@ -18,8 +20,12 @@ public class NeImage extends NeEntity {
 	
 	private boolean valid = false;
 
-	public NeImage(NeImageStorage store, String GUID) {
-		super(store, GUID);
+	public NeImage(String GUID) {
+		super(GUID);
+	}
+	
+	public String getSrcKey() {
+		return srcKey;
 	}
 
 	@Override
@@ -40,6 +46,12 @@ public class NeImage extends NeEntity {
 	public double getImageScale() {
 		return imageScale;
 	}
+	
+	@Override
+	public void connectStorage(INeImageStorage storage) {
+		super.connectStorage(storage);
+		reload();
+	}
 
 	@Override
 	protected void reload() {
@@ -47,9 +59,13 @@ public class NeImage extends NeEntity {
 			valid = false;
 			return;
 		}
+		if(storage == null) {
+			return;
+		}
 		calculateImage();
-		NeCachedImage temp = store.get(srcKey, getImageScale());
+		NeCachedImage temp = storage.get(srcKey, getImageScale());
 		if(temp == null || temp.getImage() == null) {
+			System.out.println("Failed loading " + srcKey);
 			valid = false;
 		} else {
 			valid = true;
@@ -61,7 +77,10 @@ public class NeImage extends NeEntity {
 	}
 	
 	private void calculateImage() {
-		Dimension size = store.getSize(srcKey);
+		if(storage == null) {
+			return;
+		}
+		Dimension size = storage.getSize(srcKey);
 		if (size == null) {
 			imageScale = 1;
 		}

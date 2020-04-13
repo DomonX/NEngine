@@ -1,11 +1,13 @@
 package domonx.zoo;
 
-import domonx.zoo.window.MainFrame;
+import javax.swing.JFrame;
+
+import domonx.zoo.window.NeBaseGame;
 
 public class App {
 	public static void main(String[] args) {		
-		MainFrame frame = new MainFrame();
-		frame.setVisible(true);
-		frame.enterMainLoop();
+		NeBaseGame game = new NeBaseGame(new JFrame());
+		game.window.setVisible(true);
+		game.enterMainLoop();
 	}
 }

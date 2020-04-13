@@ -2,6 +2,7 @@ package domonx.zoo.window;
 
 import java.awt.Graphics;
 
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import domonx.zoo.core.interfaces.INeRenderable;
@@ -11,13 +12,17 @@ public class NeBasePanel extends JPanel implements INeTickListener, INeRenderabl
 
 	private static final long serialVersionUID = -2013484543573015813L;
 
-	protected NeSyncFrame owner;
+	protected NeGameDataStorage game;
+	
+	protected JFrame window;
 
 	private NeGraphicsModule graphics;
 
-	public NeBasePanel(NeSyncFrame owner, NeGraphicsModule graphics) {
-		this.owner = owner;
-		this.graphics = graphics;
+	public NeBasePanel(NeGameDataStorage game, JFrame window) {
+		super();
+		this.game = game;
+		this.window = window;
+		createGraphics();
 	}
 
 	@Override
@@ -33,6 +38,14 @@ public class NeBasePanel extends JPanel implements INeTickListener, INeRenderabl
 	@Override
 	public void renderDev(Graphics g) {
 
+	}
+	
+	public NeGraphicsModule getGraphicsModule() {
+		return graphics;
+	}
+	
+	protected void createGraphics() {
+		this.graphics = new NeGraphicsModule(game, window);
 	}
 
 	protected void paintComponent(Graphics g) {

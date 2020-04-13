@@ -3,19 +3,20 @@ package domonx.zoo.core.entity.container;
 import java.awt.Graphics;
 import java.util.HashMap;
 
+import domonx.zoo.core.controller.INeController;
 import domonx.zoo.core.entity.INeEntity;
+import domonx.zoo.core.entity.NeEntity;
 import domonx.zoo.core.entity.NeImage;
-import domonx.zoo.core.storage.NeImageStorage;
 
 public class NeContainer extends NeImage implements INeContainer{
 	
-	public HashMap<String, INeEntity> content;
+	public HashMap<String, NeEntity> content;
 	
 	private INeLayout layout;
 
-	public NeContainer(NeImageStorage storage, String GUID) {
-		super(storage, GUID);
-		content = new HashMap<String, INeEntity>();
+	public NeContainer(String GUID) {
+		super(GUID);
+		content = new HashMap<String, NeEntity>();
 	}
 
 	@Override
@@ -28,15 +29,19 @@ public class NeContainer extends NeImage implements INeContainer{
 	}
 
 	@Override
-	public void add(INeEntity item) {
+	public void add(NeEntity item) {
 		item.setScale(getScale());
 		item.setOwner(this);
 		content.put(item.getGUID(), item);
+		item.updateGUID();
+		item.recalculateOnScreenPosition();
+		layout();
 	}
 
 	@Override
 	public void remove(String GUID) {
 		content.remove(GUID);
+		layout();
 	}
 
 	@Override
@@ -52,17 +57,61 @@ public class NeContainer extends NeImage implements INeContainer{
 	@Override
 	public void move(double x, double y) {
 		super.move(x, y);
-		content.forEach((String key, INeEntity item) -> {
-			item.move(x, y);
-		});
+		layout();
 	}
 	
 	@Override
 	public void setScale(double scale) {
 		super.setScale(scale);
+		content.forEach((String key, NeEntity item) -> {
+			item.setScale(scale);
+		});
+		layout();
+	}
+	
+	@Override
+	public void connectController(INeController controller) {
+		this.controller = controller;
+	}
+	
+	public void tick(int hertz) {
 		content.forEach((String key, INeEntity item) -> {
-			item.setScale(getScale());
+			item.tick(hertz);
 		});
 	}
+	
+	@Override
+	public void updateGUID() {
+		super.updateGUID();
+		content.forEach((String key, NeEntity item) -> {
+			item.updateGUID();
+		});
+	}
+	
+	@Override
+	public void recalculateOnScreenPosition() {
+		super.recalculateOnScreenPosition();
+		layout();
+	}
+	
+	public void layout() {
+		if(this.layout == null) {
+			customRecalculateChilds();
+			return;
+		}
+		layout.applyLayout();
+	}
+	
+	protected void customRecalculateChilds() {
+		content.forEach((String key, INeEntity item) -> {
+			item.recalculateOnScreenPosition();
+		});
+	}
+
+	@Override
+	public INeLayout getLayout() {
+		return this.layout;
+	}
+	
 
 }

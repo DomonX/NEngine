@@ -2,33 +2,35 @@ package domonx.zoo.core.entity;
 
 import domonx.zoo.core.controller.INeController;
 import domonx.zoo.core.entity.container.INeContainer;
+import domonx.zoo.core.interfaces.INeGameObject;
 import domonx.zoo.core.interfaces.INeRenderable;
 import domonx.zoo.core.interfaces.INeTickListener;
+import domonx.zoo.core.storage.INeImageStorage;
 
-public interface INeEntity extends INeTickListener, INeRenderable{
+public interface INeEntity extends INeTickListener, INeRenderable, INeGameObject{
+	
 	public String getGUID();
 	public String getGUIDPath();
 	
-	public double getX();
-	public double getY();
-	public double getWidth();
-	public double getHeight();
-	public void setWidth(double width);
-	public void setHeight(double height);
-	public boolean isPointInside(int x, int y);
-	public void move(double x, double y);
 	public double getScale();
 	public void setScale(double scale);
 	
-	public INeContainer getOwner();
-	public void setOwner(INeContainer owner);
+	public INeEntity getOwner();
+	public void setOwner(INeEntity owner);
 	
 	public double getImageScale();
 	
 	public void load(String key);
 	
+	// Controller Injection
+	
 	public void connectController(INeController controller);
 	public boolean isControllerActive();
 	public void setControllerActive(boolean activity);
+	public INeController getController();
+	
+	// Storage Injection
+	
+	public void connectStorage(INeImageStorage storage);
 	
 }
