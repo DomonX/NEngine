@@ -21,6 +21,9 @@ public class NeContainer extends NeImage implements INeContainer{
 
 	@Override
 	public void render(Graphics g) {
+		if(!visible) {
+			return;
+		}
 		super.render(g);
 		content.forEach((String key, INeEntity item) -> {
 			item.render(g);

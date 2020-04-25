@@ -107,6 +107,7 @@ public class NeMouseController extends NeController implements MouseListener, Mo
 			return;
 		}
 		clicked = true;
+		informClicked();
 		oldX = entity.getX();
 		oldY = entity.getY();
 		offsetX = xPos - entity.getX();
@@ -127,21 +128,21 @@ public class NeMouseController extends NeController implements MouseListener, Mo
 		if(listener == null) {
 			return;
 		}
-		listener.handleAction(new NeActionEntityHovered(entity.getGUIDPath()));
+		listener.handleAction(new NeActionEntityHovered(entity.getGUIDPath(), getExtraSignature()));
 	}
 	
 	protected void informBlured() {
 		if(listener == null) {
 			return;
 		}
-		listener.handleAction(new NeActionEntityBlured(entity.getGUIDPath()));
+		listener.handleAction(new NeActionEntityBlured(entity.getGUIDPath(), getExtraSignature()));
 	}
 	
 	protected void informClicked() {
 		if(listener == null) {
 			return;
 		}
-		listener.handleAction(new NeActionEntityClicked(entity.getGUIDPath()));
+		listener.handleAction(new NeActionEntityClicked(entity.getGUIDPath(), getExtraSignature()));
 	}
 
 }

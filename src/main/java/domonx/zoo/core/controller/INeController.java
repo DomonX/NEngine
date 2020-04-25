@@ -10,4 +10,6 @@ public interface INeController extends INeTickListener{
 	public void addActionListener(INeActionListener listener);
 	public void move(double x, double y);
 	public void returnOldPosition();
+	public EControllerSignatures getExtraSignature();
+	public void setExtraSignature(EControllerSignatures signature);
 }

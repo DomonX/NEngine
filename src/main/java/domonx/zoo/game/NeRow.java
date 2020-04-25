@@ -25,6 +25,8 @@ public class NeRow {
 		GUIElement.add(card.GUIElement);
 		cards.put(card.GUID, card);
 		card.GUIElement.fit();
+		card.rowGUID = GUID;
+		@SuppressWarnings("unused")
 		NeVerticalLayout l = (NeVerticalLayout)(this.GUIElement.getLayout());
 		GUIElement.layout();
 		cardCode = card.code;
@@ -34,6 +36,21 @@ public class NeRow {
 		GUIElement.remove(GUID);
 		cards.remove(GUID);
 	}
+	
+	public boolean rowCanHoldCard(NeCard card) {
+		if(cardCode == "") {
+			return true;
+		}
+		if(card.code == cardCode) {
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean hasItem(String key) {
+		return cards.containsKey(key);
+	}
+
 	
 	private void prepareGUI(NeGraphicsModule graphics, INeActionListener listener, int x, int y) {
 		GUIElement = new NeContainer(GUID);

@@ -2,14 +2,14 @@ package domonx.zoo.window;
 
 import javax.swing.JFrame;
 
-import domonx.zoo.state.NeGameState;
+import domonx.zoo.state.NeBaseGameState;
+import domonx.zoo.state.NeCustomGameState;
+import domonx.zoo.state.NeGameStateController;
 
 public class NeBaseGame extends NeGame {
 	
 	private NeBasePanel panel;
-	
-	@SuppressWarnings("unused")
-	private NeGameState state;
+	private NeCustomGameState state;
 	
 	public NeBaseGame(JFrame window) {
 		super(window);
@@ -25,7 +25,9 @@ public class NeBaseGame extends NeGame {
 	}
 	
 	protected void createGameState() {
-		state = new NeGameState(panel.getGraphicsModule());
+		NeGameStateController stack = new NeGameStateController();
+		state = new NeCustomGameState(panel.getGraphicsModule(), stack);
+		stack.connectState(state);
 	}
 	
 	@Override
@@ -38,6 +40,7 @@ public class NeBaseGame extends NeGame {
 	protected void updateGame(int hertzPassed) {
 		super.updateGame(hertzPassed);
 		panel.tick(hertzPassed);
+		state.tick(hertzPassed);
 	}
 
 }

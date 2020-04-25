@@ -9,6 +9,8 @@ import domonx.zoo.core.storage.NeCachedImage;
 import domonx.zoo.core.storage.NeImageStorage;
 
 public class NeImage extends NeEntity {
+	
+	public boolean visible = true;
 
 	private NeCachedImage image;
 	private String srcKey;
@@ -30,7 +32,7 @@ public class NeImage extends NeEntity {
 
 	@Override
 	public void render(Graphics g) {
-		if(valid) {
+		if(valid && visible) {
 			g.drawImage(image.getImage(), (int) (getX() + imageShiftX), (int) (getY() + imageShiftY), null);
 		}
 		renderDev(g);

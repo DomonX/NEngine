@@ -10,23 +10,43 @@ import domonx.zoo.core.interfaces.INeActionListener;
 import domonx.zoo.core.util.GUIDGenerator;
 import domonx.zoo.window.NeGraphicsModule;
 
-public class NeRowsHolder {
+public class NeRowsHolder extends NeStructureElement{
 	
 	public String GUID = "";
 	public NeContainer GUIElement = null;
 	public HashMap<String, NeRow> rows = new HashMap<String, NeRow>();
 	
-	private NeGraphicsModule graphics;
+	private int x;
+	private int y;
 	
-	private INeActionListener listener;
+	private String searchBuffer = "";
 
 	NeRowsHolder(String GUID, NeGraphicsModule graphics, INeActionListener listener, int x, int y) {
-		this.graphics = graphics;
-		this.listener = listener;
-		prepareGUI(GUID, graphics, listener, x, y);
+		super(GUID, ENeStructureType.none, graphics, listener);
+		this.x = x;
+		this.y = y;
+		prepareGUI();
+	}
+	
+	public NeRow addRow(ArrayList<NeRow> registry) {
+		NeRow temp = new NeRow(GUIDGenerator.get(), graphics, listener, 0, 0);
+		rows.put(temp.GUID, temp);
+		GUIElement.add(temp.GUIElement);
+		temp.GUIElement.fit();
+		registry.add(temp);
+		return temp;
+	}
+	
+	public String hasItem(String key) {
+		searchBuffer = "";
+		rows.forEach((String rowKey, NeRow item) -> {
+			searchBuffer = item.hasItem(key) ? rowKey : searchBuffer;
+		});
+		return searchBuffer;
 	}
 
-	public void prepareGUI(String GUID, NeGraphicsModule graphics, INeActionListener listener, int x, int y) {
+	@Override
+	protected void prepareGUI() {
 		GUIElement = new NeContainer(GUID);
 		@SuppressWarnings("unused")
 		NeHorizontalLayout l = new NeHorizontalLayout(GUIElement);
@@ -38,15 +58,7 @@ public class NeRowsHolder {
 		GUIElement.moveRelatively(0, 0);
 		GUIElement.setScale(1);
 		GUIElement.move(x, y);
-	}
-	
-	public NeRow addRow(ArrayList<NeRow> registry) {
-		NeRow temp = new NeRow(GUIDGenerator.get(), graphics, listener, 0, 0);
-		rows.put(temp.GUID, temp);
-		GUIElement.add(temp.GUIElement);
-		temp.GUIElement.fit();
-		registry.add(temp);
-		return temp;
+		
 	}
 
 }

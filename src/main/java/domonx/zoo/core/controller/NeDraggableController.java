@@ -13,7 +13,7 @@ public class NeDraggableController extends NeMouseController {
 	public NeDraggableController(NeEntity entity, JFrame informer) {
 		super(entity, informer);
 	}
-	
+
 	@Override
 	public void mouseDragged(MouseEvent e) {
 		if (!clicked) {
@@ -21,21 +21,21 @@ public class NeDraggableController extends NeMouseController {
 		}
 		move(e.getX() - offsetX, e.getY() - offsetY);
 	}
-	
+
 	protected void informDragged(MouseEvent e) {
-		if(listener == null) {
+		if (listener == null) {
 			return;
 		}
-		listener.handleAction(new NeActionEntityMoved(entity.getGUIDPath(), e.getX(), e.getY(), (int) (this.offsetX), (int) (this.offsetY)));
+		listener.handleAction(new NeActionEntityMoved(entity.getGUIDPath(), e.getX(), e.getY(), (int) (this.offsetX),
+				(int) (this.offsetY), getExtraSignature()));
 	}
-	
+
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		if(clicked) {
+		if (clicked) {
 			informDragged(e);
 			clicked = false;
 		}
 	}
-	
 
 }

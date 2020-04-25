@@ -15,6 +15,8 @@ public abstract class NeController implements INeController{
 	protected INeActionListener listener;
 	
 	protected boolean isMovePermitted;
+	
+	private EControllerSignatures extraSignatrue;
 
 	public NeController(NeEntity entity, JFrame informer) {
 		super();
@@ -26,6 +28,16 @@ public abstract class NeController implements INeController{
 
 	@Override
 	public abstract void addInformer(JFrame informer);
+	
+	@Override
+	public EControllerSignatures getExtraSignature() {
+		return extraSignatrue;
+	}
+	
+	@Override
+	public void setExtraSignature(EControllerSignatures signature) {
+		extraSignatrue = signature;
+	}
 	
 	@Override
 	public void addActionListener(INeActionListener listener) {

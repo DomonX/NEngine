@@ -1,6 +1,7 @@
 package domonx.zoo.actions;
 
 import domonx.zoo.actions.data.NeActionEntityMovedData;
+import domonx.zoo.core.controller.EControllerSignatures;
 
 public class NeActionEntityMoved extends NeAction{
 	
@@ -11,14 +12,14 @@ public class NeActionEntityMoved extends NeAction{
 		return data;
 	}
 
-	public NeActionEntityMoved(String srcGUIDPath, int x, int y) {
-		super(srcGUIDPath, ENeActionTypes.EntityDragged);
+	public NeActionEntityMoved(String srcGUIDPath, int x, int y, EControllerSignatures signature) {
+		super(srcGUIDPath, ENeActionTypes.EntityDragged, signature);
 		data.x = x;
 		data.y = y;
 	} 
 	
-	public NeActionEntityMoved(String srcGUIDPath, int x, int y, int xOffset, int yOffset) {
-		super(srcGUIDPath, ENeActionTypes.EntityDragged);
+	public NeActionEntityMoved(String srcGUIDPath, int x, int y, int xOffset, int yOffset, EControllerSignatures signature) {
+		super(srcGUIDPath, ENeActionTypes.EntityDragged, signature);
 		data.x = x;
 		data.y = y;
 		data.xOffset = xOffset;

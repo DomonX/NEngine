@@ -1,8 +1,10 @@
 package domonx.zoo.actions;
 
+import domonx.zoo.core.controller.EControllerSignatures;
+
 public class NeActionEntityHovered extends NeAction{
-	public NeActionEntityHovered(String srcGUIDPath) {
-		super(srcGUIDPath, ENeActionTypes.EntityHovered);
+	public NeActionEntityHovered(String srcGUIDPath, EControllerSignatures signature) {
+		super(srcGUIDPath, ENeActionTypes.EntityHovered, signature);
 	}
 
 	@Override
