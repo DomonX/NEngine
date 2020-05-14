@@ -16,7 +16,7 @@
 					<appendAssemblyId>false</appendAssemblyId>
 					<archive>
 						<manifest>
-							<mainClass>domonx.zoo.App</mainClass>
+							<mainClass>domonx.zoo.window.App</mainClass>
 						</manifest>
 					</archive>
 					<descriptorRefs>

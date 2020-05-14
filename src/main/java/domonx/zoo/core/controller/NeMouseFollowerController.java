@@ -21,7 +21,7 @@ public class NeMouseFollowerController extends NeMouseController{
 	@Override
 	public void mouseDragged(MouseEvent e) {
 		if(entity instanceof NeContainer) {
-			((NeContainer)(entity)).content.clear();
+			((NeContainer)(entity)).getContent().clear();
 		}
 	}
 	@Override

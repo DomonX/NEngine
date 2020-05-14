@@ -10,12 +10,13 @@ import domonx.zoo.core.configuration.NeConstantsRegistry;
 
 public class NeGame implements KeyListener {
 
-	public JFrame window;
+	protected JFrame window;
+	protected NeGameDataStorage data;
 	private long currentNanoTimeFps = 0;
 	private long currentNanoTimeHertz = 0;
 	private long currentNanoTimeCounter = 0;
 	private int currentFps = 0;
-	protected NeGameDataStorage data;
+	private boolean isBreak = false;
 	
 	public NeGame(JFrame window) {
 		this.window = window;
@@ -28,7 +29,7 @@ public class NeGame implements KeyListener {
 
 	@Override
 	public void keyTyped(KeyEvent e) {
-		
+		// NeGame doesn't react to keyTyped from KeyListener listener
 	}
 
 	@Override
@@ -40,12 +41,12 @@ public class NeGame implements KeyListener {
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		
+		// NeGame doesn't react to keyReleased from KeyListener interface
 	}
 
 	public void enterMainLoop() {
 		long lastNanoTime = System.nanoTime();
-		while (true) {
+		while (!isBreak()) {
 			mainLoop();
 			long currentNanoTime = System.nanoTime();
 			long timeElapsed = currentNanoTime - lastNanoTime;
@@ -56,12 +57,24 @@ public class NeGame implements KeyListener {
 		}
 	}
 
+	public boolean isBreak() {
+		return isBreak;
+	}
+	
+	public void setBreak(boolean isBreak) {
+		this.isBreak = isBreak;
+	}
+	
+	public void show() {
+		window.setVisible(true);
+	}
+	
 	protected void updateScreen() {
-		
+		throw new UnsupportedOperationException();
 	}
 	
 	protected void updateGame(int hertzPassed) {
-		
+		throw new UnsupportedOperationException();
 	}
 
 
@@ -82,5 +95,6 @@ public class NeGame implements KeyListener {
 			currentFps = 0;
 		}
 	}
+
 
 }

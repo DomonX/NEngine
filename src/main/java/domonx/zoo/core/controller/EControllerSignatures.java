@@ -1,5 +1,5 @@
 package domonx.zoo.core.controller;
 
 public enum EControllerSignatures {
-	EndButton, Card
+	SUBMIT_PICKS_BUTTON, END_BUTTON, PICK_ROWS_BUTTON, SWAP_CARDS_BUTTON, CARD
 }

@@ -39,7 +39,7 @@ public class NeGraphicsModule implements INeTickListener {
 	public void render(Graphics g) {
 		clearScreen(g);
 		screen.render(g);
-		if (NeConfiguration.showFps) {
+		if (NeConfiguration.isShowFps()) {
 			paintFps(g);
 		}
 	}

@@ -3,7 +3,7 @@ package domonx.zoo.core.controller;
 import javax.swing.JFrame;
 
 import domonx.zoo.core.entity.NeEntity;
-import domonx.zoo.core.interfaces.INeActionListener;
+import domonx.zoo.core.interfaces.NeAbstractActionListener;
 
 public abstract class NeController implements INeController{
 	
@@ -12,7 +12,7 @@ public abstract class NeController implements INeController{
 	protected double oldY = -1;
 	
 	protected NeEntity entity;
-	protected INeActionListener listener;
+	protected NeAbstractActionListener listener;
 	
 	protected boolean isMovePermitted;
 	
@@ -25,9 +25,6 @@ public abstract class NeController implements INeController{
 		this.informer = informer;
 		addInformer(informer); 
 	}
-
-	@Override
-	public abstract void addInformer(JFrame informer);
 	
 	@Override
 	public EControllerSignatures getExtraSignature() {
@@ -40,7 +37,7 @@ public abstract class NeController implements INeController{
 	}
 	
 	@Override
-	public void addActionListener(INeActionListener listener) {
+	public void addActionListener(NeAbstractActionListener listener) {
 		this.listener = listener;
 	}
 
@@ -58,6 +55,16 @@ public abstract class NeController implements INeController{
 	@Override
 	public void returnOldPosition() {
 		move(oldX, oldY);
+	}
+	@Override
+	public void destroy() {
+		this.entity = null;
+	}
+	public boolean isValid() {
+		return listener != null && entity != null;
+	}
+	public boolean isEntityValid() {
+		return entity != null;
 	}
 
 

@@ -4,9 +4,8 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JFrame;
 
-import domonx.zoo.actions.NeActionEntityMoved;
+import domonx.zoo.core.actions.NeActionEntityMoved;
 import domonx.zoo.core.entity.NeEntity;
-import domonx.zoo.core.interfaces.INeActionListener;
 
 public class NeDraggableController extends NeMouseController {
 
@@ -23,7 +22,7 @@ public class NeDraggableController extends NeMouseController {
 	}
 
 	protected void informDragged(MouseEvent e) {
-		if (listener == null) {
+		if (!isValid()) {
 			return;
 		}
 		listener.handleAction(new NeActionEntityMoved(entity.getGUIDPath(), e.getX(), e.getY(), (int) (this.offsetX),

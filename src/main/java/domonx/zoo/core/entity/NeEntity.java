@@ -5,8 +5,6 @@ import java.awt.Graphics;
 
 import domonx.zoo.core.configuration.NeConfiguration;
 import domonx.zoo.core.configuration.NeConstantsRegistry;
-import domonx.zoo.core.controller.INeController;
-import domonx.zoo.core.storage.INeImageStorage;
 import domonx.zoo.core.util.NeEntityUtils;
 
 public abstract class NeEntity extends NeBaseEntity {
@@ -22,8 +20,8 @@ public abstract class NeEntity extends NeBaseEntity {
 
 	private double scale = 1;
 
-	public NeEntity(String GUID) {
-		super(GUID);
+	public NeEntity(String guid) {
+		super(guid);
 	}
 
 	@Override

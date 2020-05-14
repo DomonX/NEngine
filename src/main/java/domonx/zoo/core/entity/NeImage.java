@@ -3,14 +3,13 @@ package domonx.zoo.core.entity;
 import java.awt.Dimension;
 import java.awt.Graphics;
 
-import domonx.zoo.core.configuration.NeConfiguration;
 import domonx.zoo.core.storage.INeImageStorage;
 import domonx.zoo.core.storage.NeCachedImage;
-import domonx.zoo.core.storage.NeImageStorage;
 
 public class NeImage extends NeEntity {
 	
-	public boolean visible = true;
+	private boolean visible = true;
+
 
 	private NeCachedImage image;
 	private String srcKey;
@@ -22,8 +21,16 @@ public class NeImage extends NeEntity {
 	
 	private boolean valid = false;
 
-	public NeImage(String GUID) {
-		super(GUID);
+	public NeImage(String guid) {
+		super(guid);
+	}
+	
+	public boolean isVisible() {
+		return visible;
+	}
+	
+	public void setVisible(boolean visible) {
+		this.visible = visible;
 	}
 	
 	public String getSrcKey() {
@@ -38,13 +45,11 @@ public class NeImage extends NeEntity {
 		renderDev(g);
 	}
 
-	@Override
 	public void load(String key) {
 		srcKey = key;
 		reload();
 	}
 
-	@Override
 	public double getImageScale() {
 		return imageScale;
 	}
@@ -83,20 +88,44 @@ public class NeImage extends NeEntity {
 			return;
 		}
 		Dimension size = storage.getSize(srcKey);
-		if (size == null) {
-			imageScale = 1;
-		}
 		if (getWidth() < getHeight()) {
-			imageScale = getWidth() / size.width;
-			imageShiftY = getHeight() - (size.height * imageScale);
-			imageShiftY /= 2;
-			imageShiftX = 0;
+			calculateImageOffsetX(size);
+			return;
+		}
+		calculateImageOffsetY(size);
+	}
+	
+	private void resetOffset() {
+		imageScale = 1;
+		imageShiftY = 0;
+		imageShiftX = 0;
+	}
+	
+	private void calculateImageOffsetX(Dimension size) {
+		if(size == null) {
+			resetOffset();
 			return;
 		}
 		imageScale = getHeight() / size.height;
 		imageShiftY = 0;
 		imageShiftX = getWidth() - (size.width * imageScale);
 		imageShiftX /= 2;
+	}
+	private void calculateImageOffsetY(Dimension size) {
+		if(size == null) {
+			resetOffset();
+			return;
+		}
+		imageScale = getWidth() / size.width;
+		imageShiftY = getHeight() - (size.height * imageScale);
+		imageShiftY /= 2;
+		imageShiftX = 0;
+	}
+
+	@Override
+	public void destroy() {
+		super.destroy();
+		image.unlink();
 	}
 
 }

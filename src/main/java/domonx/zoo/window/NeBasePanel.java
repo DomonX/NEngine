@@ -37,7 +37,7 @@ public class NeBasePanel extends JPanel implements INeTickListener, INeRenderabl
 
 	@Override
 	public void renderDev(Graphics g) {
-
+		// Base Panel doesn't have developer mode render, this method can be override
 	}
 	
 	public NeGraphicsModule getGraphicsModule() {
@@ -47,7 +47,8 @@ public class NeBasePanel extends JPanel implements INeTickListener, INeRenderabl
 	protected void createGraphics() {
 		this.graphics = new NeGraphicsModule(game, window);
 	}
-
+	
+	@Override
 	protected void paintComponent(Graphics g) {
 		render(g);
 	}

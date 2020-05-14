@@ -1,167 +1,157 @@
 package domonx.zoo.game.cards;
 
-import java.util.Arrays;
-import java.util.List;
-
-import domonx.zoo.core.interfaces.INeActionListener;
-import domonx.zoo.game.NeCard;
-import domonx.zoo.state.INeGameStateController;
+import domonx.zoo.core.interfaces.NeAbstractActionListener;
+import domonx.zoo.game.interfaces.NeAbstractGameStateController;
+import domonx.zoo.game.structures.NeCard;
 import domonx.zoo.window.NeGraphicsModule;
-
 public class CardFactory {
-NeGraphicsModule graphics;
-	INeActionListener listener;
-	INeGameStateController state;
+	NeGraphicsModule graphics;
+	NeAbstractActionListener listener;
+	NeAbstractGameStateController state;
 
-	public CardFactory(NeGraphicsModule graphics, INeActionListener listener, INeGameStateController state) {
+	public CardFactory(NeGraphicsModule graphics, NeAbstractActionListener listener, NeAbstractGameStateController state) {
 		super();
 		this.graphics = graphics;
 		this.listener = listener;
 		this.state = state;
 	}	public NeCard get(String cardCode, String GUID) {
-		
-		List<Class<?>> classes = Arrays.asList(NeCard.class.getClasses());
-		classes.forEach((Class<?> item) -> System.out.println(item.getCanonicalName()));
 
-		if(cardCode == NeCardCodes.Anthelope) {
+		if(cardCode.equals(NeCardCodes.Anthelope)) {
 			return new CardAnthelope(GUID, graphics, listener, state);
 		}
-		if(cardCode == NeCardCodes.Bat) {
+		if(cardCode.equals(NeCardCodes.Bat)) {
 			return new CardBat(GUID, graphics, listener, state);
 		}
-		if(cardCode == NeCardCodes.Bear) {
+		if(cardCode.equals(NeCardCodes.Bear)) {
 			return new CardBear(GUID, graphics, listener, state);
 		}
-		if(cardCode == NeCardCodes.BlackPanther) {
+		if(cardCode.equals(NeCardCodes.BlackPanther)) {
 			return new CardBlackPanther(GUID, graphics, listener, state);
 		}
-		if(cardCode == NeCardCodes.BlueWhale) {
+		if(cardCode.equals(NeCardCodes.BlueWhale)) {
 			return new CardBlueWhale(GUID, graphics, listener, state);
 		}
-		if(cardCode == NeCardCodes.Chamaeleon) {
+		if(cardCode.equals(NeCardCodes.Chamaeleon)) {
 			return new CardChamaeleon(GUID, graphics, listener, state);
 		}
-		if(cardCode == NeCardCodes.Cheetah) {
+		if(cardCode.equals(NeCardCodes.Cheetah)) {
 			return new CardCheetah(GUID, graphics, listener, state);
 		}
-		if(cardCode == NeCardCodes.Chimpanzee) {
+		if(cardCode.equals(NeCardCodes.Chimpanzee)) {
 			return new CardChimpanzee(GUID, graphics, listener, state);
 		}
-		if(cardCode == NeCardCodes.Cobra) {
+		if(cardCode.equals(NeCardCodes.Cobra)) {
 			return new CardCobra(GUID, graphics, listener, state);
 		}
-		if(cardCode == NeCardCodes.Cougar) {
+		if(cardCode.equals(NeCardCodes.Cougar)) {
 			return new CardCougar(GUID, graphics, listener, state);
 		}
-		if(cardCode == NeCardCodes.Crocodile) {
+		if(cardCode.equals(NeCardCodes.Crocodile)) {
 			return new CardCrocodile(GUID, graphics, listener, state);
 		}
-		if(cardCode == NeCardCodes.Crow) {
+		if(cardCode.equals(NeCardCodes.Crow)) {
 			return new CardCrow(GUID, graphics, listener, state);
 		}
-		if(cardCode == NeCardCodes.Dolphin) {
+		if(cardCode.equals(NeCardCodes.Dolphin)) {
 			return new CardDolphin(GUID, graphics, listener, state);
 		}
-		if(cardCode == NeCardCodes.Eagle) {
+		if(cardCode.equals(NeCardCodes.Eagle)) {
 			return new CardEagle(GUID, graphics, listener, state);
 		}
-		if(cardCode == NeCardCodes.Elephant) {
+		if(cardCode.equals(NeCardCodes.Elephant)) {
 			return new CardElephant(GUID, graphics, listener, state);
 		}
-		if(cardCode == NeCardCodes.EuropeanBison) {
+		if(cardCode.equals(NeCardCodes.EuropeanBison)) {
 			return new CardEuropeanBison(GUID, graphics, listener, state);
 		}
-		if(cardCode == NeCardCodes.Fox) {
+		if(cardCode.equals(NeCardCodes.Fox)) {
 			return new CardFox(GUID, graphics, listener, state);
 		}
-		if(cardCode == NeCardCodes.Girafee) {
+		if(cardCode.equals(NeCardCodes.Girafee)) {
 			return new CardGirafee(GUID, graphics, listener, state);
 		}
-		if(cardCode == NeCardCodes.Gorilla) {
+		if(cardCode.equals(NeCardCodes.Gorilla)) {
 			return new CardGorilla(GUID, graphics, listener, state);
 		}
-		if(cardCode == NeCardCodes.Horse) {
+		if(cardCode.equals(NeCardCodes.Horse)) {
 			return new CardHorse(GUID, graphics, listener, state);
 		}
-		if(cardCode == NeCardCodes.Hyena) {
+		if(cardCode.equals(NeCardCodes.Hyena)) {
 			return new CardHyena(GUID, graphics, listener, state);
 		}
-		if(cardCode == NeCardCodes.Jaguar) {
+		if(cardCode.equals(NeCardCodes.Jaguar)) {
 			return new CardJaguar(GUID, graphics, listener, state);
 		}
-		if(cardCode == NeCardCodes.Leopard) {
+		if(cardCode.equals(NeCardCodes.Leopard)) {
 			return new CardLeopard(GUID, graphics, listener, state);
 		}
-		if(cardCode == NeCardCodes.Lion) {
+		if(cardCode.equals(NeCardCodes.Lion)) {
 			return new CardLion(GUID, graphics, listener, state);
 		}
-		if(cardCode == NeCardCodes.Meerkat) {
+		if(cardCode.equals(NeCardCodes.Meerkat)) {
 			return new CardMeerkat(GUID, graphics, listener, state);
 		}
-		if(cardCode == NeCardCodes.Owl) {
+		if(cardCode.equals(NeCardCodes.Owl)) {
 			return new CardOwl(GUID, graphics, listener, state);
 		}
-		if(cardCode == NeCardCodes.Panda) {
+		if(cardCode.equals(NeCardCodes.Panda)) {
 			return new CardPanda(GUID, graphics, listener, state);
 		}
-		if(cardCode == NeCardCodes.Parrot) {
+		if(cardCode.equals(NeCardCodes.Parrot)) {
 			return new CardParrot(GUID, graphics, listener, state);
 		}
-		if(cardCode == NeCardCodes.Python) {
+		if(cardCode.equals(NeCardCodes.Python)) {
 			return new CardPython(GUID, graphics, listener, state);
 		}
-		if(cardCode == NeCardCodes.Rabbit) {
+		if(cardCode.equals(NeCardCodes.Rabbit)) {
 			return new CardRabbit(GUID, graphics, listener, state);
 		}
-		if(cardCode == NeCardCodes.Raccoon) {
+		if(cardCode.equals(NeCardCodes.Raccoon)) {
 			return new CardRaccoon(GUID, graphics, listener, state);
 		}
-		if(cardCode == NeCardCodes.Rat) {
+		if(cardCode.equals(NeCardCodes.Rat)) {
 			return new CardRat(GUID, graphics, listener, state);
 		}
-		if(cardCode == NeCardCodes.Raven) {
+		if(cardCode.equals(NeCardCodes.Raven)) {
 			return new CardRaven(GUID, graphics, listener, state);
 		}
-		if(cardCode == NeCardCodes.Rewers) {
-			return new CardRewers(GUID, graphics, listener, state);
-		}
-		if(cardCode == NeCardCodes.Rhyno) {
+		if(cardCode.equals(NeCardCodes.Rhyno)) {
 			return new CardRhyno(GUID, graphics, listener, state);
 		}
-		if(cardCode == NeCardCodes.Scorpio) {
+		if(cardCode.equals(NeCardCodes.Scorpio)) {
 			return new CardScorpio(GUID, graphics, listener, state);
 		}
-		if(cardCode == NeCardCodes.SeaTurtle) {
+		if(cardCode.equals(NeCardCodes.SeaTurtle)) {
 			return new CardSeaTurtle(GUID, graphics, listener, state);
 		}
-		if(cardCode == NeCardCodes.Shark) {
+		if(cardCode.equals(NeCardCodes.Shark)) {
 			return new CardShark(GUID, graphics, listener, state);
 		}
-		if(cardCode == NeCardCodes.Sloth) {
+		if(cardCode.equals(NeCardCodes.Sloth)) {
 			return new CardSloth(GUID, graphics, listener, state);
 		}
-		if(cardCode == NeCardCodes.Spider) {
+		if(cardCode.equals(NeCardCodes.Spider)) {
 			return new CardSpider(GUID, graphics, listener, state);
 		}
-		if(cardCode == NeCardCodes.Tiger) {
+		if(cardCode.equals(NeCardCodes.Tiger)) {
 			return new CardTiger(GUID, graphics, listener, state);
 		}
-		if(cardCode == NeCardCodes.Vulture) {
+		if(cardCode.equals(NeCardCodes.Vulture)) {
 			return new CardVulture(GUID, graphics, listener, state);
 		}
-		if(cardCode == NeCardCodes.Weasel) {
+		if(cardCode.equals(NeCardCodes.Weasel)) {
 			return new CardWeasel(GUID, graphics, listener, state);
 		}
-		if(cardCode == NeCardCodes.WhiteRhyno) {
+		if(cardCode.equals(NeCardCodes.WhiteRhyno)) {
 			return new CardWhiteRhyno(GUID, graphics, listener, state);
 		}
-		if(cardCode == NeCardCodes.WhiteTiger) {
+		if(cardCode.equals(NeCardCodes.WhiteTiger)) {
 			return new CardWhiteTiger(GUID, graphics, listener, state);
 		}
-		if(cardCode == NeCardCodes.Wolf) {
+		if(cardCode.equals(NeCardCodes.Wolf)) {
 			return new CardWolf(GUID, graphics, listener, state);
 		}
-		if(cardCode == NeCardCodes.Zebra) {
+		if(cardCode.equals(NeCardCodes.Zebra)) {
 			return new CardZebra(GUID, graphics, listener, state);
 		}
 		return null;

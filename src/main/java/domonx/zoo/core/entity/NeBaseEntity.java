@@ -11,17 +11,17 @@ public abstract class NeBaseEntity implements INeEntity {
 	
 	private INeEntity owner = null;
 	
-	private String GUID;
+	private String guid;
 	
-	private String GUIDPath;
+	private String guidPath;
 	
 	private boolean controllerActive = true;
 	
 	
 	public NeBaseEntity(String gUID) {
 		super();
-		GUID = gUID;
-		GUIDPath = gUID;
+		guid = gUID;
+		guidPath = gUID;
 	}
 
 	
@@ -43,12 +43,12 @@ public abstract class NeBaseEntity implements INeEntity {
 	
 	@Override
 	public String getGUID() {
-		return GUID;
+		return guid;
 	}
 
 	@Override
 	public String getGUIDPath() {
-		return GUIDPath;
+		return guidPath;
 	}
 	
 	@Override
@@ -82,7 +82,16 @@ public abstract class NeBaseEntity implements INeEntity {
 		if(owner == null) {
 			return;
 		}
-		this.GUIDPath = this.owner.getGUIDPath().concat("/").concat(GUID);
+		if(guid == null) {
+			return;
+		}
+		this.guidPath = owner.getGUIDPath().concat("/").concat(guid);
+	}
+	
+	@Override
+	public void destroy() {
+		this.controller.destroy();
+		this.controller = null;
 	}
 
 }

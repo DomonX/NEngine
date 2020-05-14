@@ -7,38 +7,32 @@ import javax.swing.JFrame;
 import domonx.zoo.core.entity.NeEntity;
 import domonx.zoo.core.entity.container.NeContainer;
 
-public class NeContainerController extends NeMouseController{
-	
-	public String currentKey;
+public class NeContainerController extends NeMouseController {
+
+	private String currentKey;
+
 
 	public NeContainerController(NeEntity entity, JFrame informer) {
 		super(entity, informer);
 	}
-	
+
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		super.mouseMoved(e);
-		if(!hovered) {
+		if (!hovered) {
 			return;
 		}
-		if(!(entity instanceof NeContainer)) {
+		if (!(entity instanceof NeContainer)) {
 			return;
 		}
-		int x = e.getX();
-		int y = e.getY();
-		NeContainer entityAsContainer = (NeContainer)(entity);
-		entityAsContainer.content.forEach((String key, NeEntity item) -> {
-			if(item.isPointInside(x, y)) {
-				currentKey = key;				
-			}
-		});
-		entityAsContainer.content.forEach((String key, NeEntity item) -> {
-			if(key == currentKey) {
-				item.setControllerActive(true);
-			} else {
-				item.setControllerActive(false);
-			}
-		});
+		NeContainer entityAsContainer = (NeContainer) (entity);
+		entityAsContainer.getContent().forEach(
+				(String key, NeEntity item) -> currentKey = item.isPointInside(e.getX(), e.getY()) ? key : currentKey);
+		entityAsContainer.getContent()
+				.forEach((String key, NeEntity item) -> item.setControllerActive(key.equals(currentKey)));
 	}
 
+	public String getCurrentKey() {
+		return currentKey;
+	}
 }

@@ -6,10 +6,9 @@ import java.awt.event.MouseMotionListener;
 
 import javax.swing.JFrame;
 
-import domonx.zoo.actions.NeActionEntityBlured;
-import domonx.zoo.actions.NeActionEntityClicked;
-import domonx.zoo.actions.NeActionEntityHovered;
-import domonx.zoo.actions.NeActionEntityMoved;
+import domonx.zoo.core.actions.NeActionEntityBlured;
+import domonx.zoo.core.actions.NeActionEntityClicked;
+import domonx.zoo.core.actions.NeActionEntityHovered;
 import domonx.zoo.core.entity.NeEntity;
 
 public class NeMouseController extends NeController implements MouseListener, MouseMotionListener {
@@ -35,11 +34,14 @@ public class NeMouseController extends NeController implements MouseListener, Mo
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
-
+		// mouseDragged should be override if wanted
 	}
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
+		if(!isEntityValid()) {
+			return;
+		}
 		boolean mouseInside = false;
 		if (entity.isPointInside(e.getX(), e.getY())) {
 			mouseInside = true;
@@ -52,22 +54,22 @@ public class NeMouseController extends NeController implements MouseListener, Mo
 		if(!mouseInside && hovered) {
 			informBlured();
 			hovered = false;
-			return;
 		}
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
+		// mouseClicked should be override if wanted
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
+		// mouseEntered should be override if wanted
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
+		// mouseExited should be override if wanted
 	}
 
 	@Override
@@ -125,21 +127,21 @@ public class NeMouseController extends NeController implements MouseListener, Mo
 	}
 	
 	protected void informHovered() {
-		if(listener == null) {
+		if(!isValid()) {
 			return;
 		}
 		listener.handleAction(new NeActionEntityHovered(entity.getGUIDPath(), getExtraSignature()));
 	}
 	
 	protected void informBlured() {
-		if(listener == null) {
+		if(!isValid()) {
 			return;
 		}
 		listener.handleAction(new NeActionEntityBlured(entity.getGUIDPath(), getExtraSignature()));
 	}
 	
 	protected void informClicked() {
-		if(listener == null) {
+		if(!isValid()) {
 			return;
 		}
 		listener.handleAction(new NeActionEntityClicked(entity.getGUIDPath(), getExtraSignature()));

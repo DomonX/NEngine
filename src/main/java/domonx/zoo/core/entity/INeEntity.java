@@ -1,7 +1,6 @@
 package domonx.zoo.core.entity;
 
 import domonx.zoo.core.controller.INeController;
-import domonx.zoo.core.entity.container.INeContainer;
 import domonx.zoo.core.interfaces.INeGameObject;
 import domonx.zoo.core.interfaces.INeRenderable;
 import domonx.zoo.core.interfaces.INeTickListener;
@@ -18,10 +17,6 @@ public interface INeEntity extends INeTickListener, INeRenderable, INeGameObject
 	public INeEntity getOwner();
 	public void setOwner(INeEntity owner);
 	
-	public double getImageScale();
-	
-	public void load(String key);
-	
 	// Controller Injection
 	
 	public void connectController(INeController controller);
@@ -32,5 +27,9 @@ public interface INeEntity extends INeTickListener, INeRenderable, INeGameObject
 	// Storage Injection
 	
 	public void connectStorage(INeImageStorage storage);
+	
+	// Cleanup
+	
+	public void destroy();
 	
 }

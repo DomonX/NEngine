@@ -2,18 +2,16 @@
 // File can be changed and will not be regenerated
 package domonx.zoo.game.cards;
 
-import domonx.zoo.core.interfaces.INeActionListener;
-import domonx.zoo.game.NeCard;
-import domonx.zoo.state.INeGameStateController;
+import domonx.zoo.core.interfaces.NeAbstractActionListener;
+import domonx.zoo.game.interfaces.NeAbstractGameStateController;
+import domonx.zoo.game.structures.NeCard;
 import domonx.zoo.window.NeGraphicsModule;
 
 public class CardChimpanzee extends NeCard{
-	
-	private static String code = NeCardCodes.Chimpanzee;
-	private static String src = "assets\\EN\\Chimpanzee.png";
 
-	public CardChimpanzee(String GUID, NeGraphicsModule graphics, INeActionListener listener, INeGameStateController state) {
-		super(GUID, src, graphics, listener, state);
+	public CardChimpanzee(String guid, NeGraphicsModule graphics, NeAbstractActionListener listener, NeAbstractGameStateController state) {
+		super(guid, "assets\\EN\\Chimpanzee.png", graphics, listener, state);
+		code =  NeCardCodes.Chimpanzee;
 	}
 
 }

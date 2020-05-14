@@ -5,9 +5,8 @@ import java.awt.Toolkit;
 
 import javax.swing.JFrame;
 
-import domonx.zoo.window.NeGame;
-
 public class NeConfiguration {	
+	
 	private static long fps;
 	private static long hertz;
 	private static boolean isCapped;	
@@ -15,9 +14,13 @@ public class NeConfiguration {
 	private static long hertzTime;	
 	private static boolean isFullScreen;	
 	private static Dimension screenResolution;	
-	private static final String installPath = "E:\\Programowanie\\Java\\Eclipse\\zoo";
-	private static final boolean developerMode = true;
-	public static boolean showFps = true;
+	private static final String INSTALL_PATH = "E:\\Programowanie\\Java\\Eclipse\\zoo";
+	private static final boolean DEVELOPER_MODE = true;
+	private static boolean showFps = true;
+	
+	private NeConfiguration() {
+		
+	}
 	
 	public static long getHertz() {
 		return hertz;
@@ -65,7 +68,19 @@ public class NeConfiguration {
 	}
 	
 	public static String getPath() {
-		return installPath;
+		return INSTALL_PATH;
+	}
+	
+	public static boolean isDeveloperMode() {
+		return DEVELOPER_MODE;
+	}
+	
+	public static boolean isShowFps() {
+		return showFps;
+	}
+	
+	public static void setShowFps(boolean showFps) {
+		NeConfiguration.showFps = showFps;
 	}
 	
 	private static void setFullScreen(JFrame target) {
@@ -89,9 +104,6 @@ public class NeConfiguration {
 		screenResolution = Toolkit.getDefaultToolkit().getScreenSize();
 	}
 	
-	public static boolean isDeveloperMode() {
-		return developerMode;
-	}
 
 	static {
 		fps = 60;

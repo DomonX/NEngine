@@ -3,12 +3,9 @@ package domonx.zoo.game.cards;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 public class NeCardCodes {
-	
-	private NeCardCodes() {
-		
-	}
 
 	public static final String Anthelope = "NE_0_ANTHELOPE";
 	public static final String Bat = "NE_1_BAT";
@@ -43,7 +40,6 @@ public class NeCardCodes {
 	public static final String Raccoon = "NE_30_RACCOON";
 	public static final String Rat = "NE_31_RAT";
 	public static final String Raven = "NE_32_RAVEN";
-	public static final String Rewers = "NE_33_REWERS";
 	public static final String Rhyno = "NE_34_RHYNO";
 	public static final String Scorpio = "NE_35_SCORPIO";
 	public static final String SeaTurtle = "NE_36_SEATURTLE";
@@ -57,6 +53,8 @@ public class NeCardCodes {
 	public static final String WhiteTiger = "NE_44_WHITETIGER";
 	public static final String Wolf = "NE_45_WOLF";
 	public static final String Zebra = "NE_46_ZEBRA";
+	
+	private static final Random gen = new Random();
 	
 	public static String getCard(int index) {
 		List<Field> fields = Arrays.asList(NeCardCodes.class.getFields());
@@ -74,5 +72,9 @@ public class NeCardCodes {
 	public static int getCardNumber() {
 		return NeCardCodes.class.getFields().length;
 	}
+	public static String getRandom() {
+		int index = gen.nextInt(getCardNumber());
+		
+		return getCard(index);
+	}
 }
-
