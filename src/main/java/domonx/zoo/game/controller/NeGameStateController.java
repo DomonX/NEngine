@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.google.gson.Gson;
+
 import domonx.zoo.core.actions.NeAction;
 import domonx.zoo.core.actions.NeActionEntityBlured;
 import domonx.zoo.core.actions.NeActionEntityClicked;
@@ -22,9 +24,12 @@ import domonx.zoo.game.interfaces.INeCard;
 import domonx.zoo.game.interfaces.NeAbstractGameStateController;
 import domonx.zoo.game.state.NeGameState;
 import domonx.zoo.game.structures.NeCard;
+import domonx.zoo.game.structures.NeDeck;
 import domonx.zoo.game.structures.NePlayer;
 import domonx.zoo.game.structures.NeRow;
 import domonx.zoo.game.util.NeGameUtil;
+import domonx.zoo.web.connection.NeWebMessageRequest;
+import domonx.zoo.web.module.NeWebModule;
 
 public class NeGameStateController implements NeAbstractGameStateController, NeAbstractActionListener, INePickListener {
 
@@ -39,9 +44,16 @@ public class NeGameStateController implements NeAbstractGameStateController, NeA
 	private NeGameState state;
 
 	private INePickListener listener;
+	
+	private NeWebModule web;
+	
+	private Gson gson;
+	
+	private String webConnectionString;
 
 	public NeGameStateController() {
 		super();
+		gson = new Gson();
 	}
 
 	@Override
@@ -51,6 +63,10 @@ public class NeGameStateController implements NeAbstractGameStateController, NeA
 
 	public void connectState(NeGameState state) {
 		this.state = state;
+	}
+	
+	public void connectWeb(NeWebModule module) {
+		this.web = module;
 	}
 
 	@Override
@@ -150,6 +166,7 @@ public class NeGameStateController implements NeAbstractGameStateController, NeA
 	public void createCardInTemp(String type, String guid) {
 		CardFactory cf = new CardFactory(state.getGraphics(), this, this);
 		INeCard temp = cf.get(type, guid);
+		System.out.println(type);
 		state.getTemporaryZone().put(temp.getGuid(), temp);
 	}
 
@@ -265,6 +282,9 @@ public class NeGameStateController implements NeAbstractGameStateController, NeA
 			}
 		} catch (IllegalStateException e) {
 			return;
+		}
+		if(movePerformed) {
+			web.c.write(src.getGUID() + " Played");
 		}
 		if (!movePerformed) {
 			src.getController().returnOldPosition();
@@ -445,7 +465,6 @@ public class NeGameStateController implements NeAbstractGameStateController, NeA
 	@Override
 	public void startGame() {
 		fillPlayerHand(state.getMainPlayer());
-		fillPlayerHand(state.getEnemy());
 		state.setCurrentState(EGameState.JUST_STARTED);
 	}
 
@@ -522,9 +541,56 @@ public class NeGameStateController implements NeAbstractGameStateController, NeA
 
 	@Override
 	public void drawCard(String playerGuid) {
-		String newCardGuid = GUIDGenerator.get();
-		createCardInTemp(state.getDeck().drawCard(), newCardGuid);
-		moveCardFromTempToHand(newCardGuid, playerGuid);		
+		sendRequest("draw", "");	
 	}
+
+	@Override
+	public void afterDrawCard(String cardGuid, String cardType) {
+		createCardInTemp(cardType, cardGuid);
+		moveCardFromTempToHand(cardGuid, state.getMainPlayer().getGuid());
+	}
+
+	@Override
+	public void getDeckSize(String playerGuid) {
+		sendRequest("deckSize", "");	
+	}
+
+	@Override
+	public void afterGetDeckSize(int size) {
+		try {
+			state.getDeck().fillUnknown(size);	
+		} catch(Exception e) {
+			
+		}
+	}
+	
+	private void sendRequest(String type, String message) {
+		NeWebMessageRequest msg = new NeWebMessageRequest();
+		msg.playerGuid = webConnectionString;
+		msg.type = type;
+		msg.message = message;
+		String webMessage = gson.toJson(msg);
+		web.c.write(webMessage);	
+	}
+
+	@Override
+	public void afterConnected(String playerGuid) {
+		this.webConnectionString = playerGuid;
+	}
+
+	@Override
+	public void afterOpponentHandChange(String cardGuid, boolean isRemoved) {
+		if(isRemoved) {
+			state.getEnemy().hand.getCards().remove(cardGuid);
+			return;
+		}
+		createCardInTemp("NE_33_REWERS", cardGuid);
+		moveCardFromTempToHand(cardGuid, state.getEnemy().getGuid());		
+	}
+
+	@Override
+	public void afterOpponentPlayCard(String cardType, int rowNumber) {
+		
+	}	
 
 }

@@ -1,0 +1,18 @@
+<conf>
+    <runMode>serverx</runMode>
+    <server>
+        <port>8080</port>
+        <ip>127.0.0.1</ip>
+    </server>
+	<game>
+		<showFps>false</showFps>
+		<developerMode>false</developerMode>
+		<screen>
+			<width>1920</width>
+			<height>1080</height>
+			<fullscreen>true</fullscreen>
+		</screen>
+		<maxFps>60</maxFps>
+	</game>
+	<installPath>E:\Programowanie\Java\Eclipse\zoo</installPath>
+</conf>

@@ -9,9 +9,9 @@ import domonx.zoo.core.controller.EControllerSignatures;
 import domonx.zoo.core.interfaces.NeAbstractActionListener;
 import domonx.zoo.core.util.GUIDGenerator;
 import domonx.zoo.game.consts.ImagePaths;
-import domonx.zoo.game.controller.NeGameStateController;
 import domonx.zoo.game.enums.EGameState;
 import domonx.zoo.game.interfaces.INeCard;
+import domonx.zoo.game.interfaces.NeAbstractGameStateController;
 import domonx.zoo.game.structures.NeDeck;
 import domonx.zoo.game.structures.NeDiode;
 import domonx.zoo.game.structures.NeEnemy;
@@ -42,6 +42,11 @@ public class NeGameState extends NeBaseGameState {
 	private NeStructureButton swapCardsButton;
 	private NeStructureButton submitPicksButton;
 
+	public NeGameState(NeGraphicsModule graphics, NeAbstractGameStateController controller,
+			NeAbstractActionListener listener) {
+		super(graphics, controller, listener);
+	}
+
 	public NeStructureButton getPickRowsButton() {
 		return pickRowsButton;
 	}
@@ -60,10 +65,6 @@ public class NeGameState extends NeBaseGameState {
 
 	public void setCurrentState(EGameState currentState) {
 		this.currentState = currentState;
-	}
-
-	public NeGameState(NeGraphicsModule graphics, NeGameStateController controller, NeAbstractActionListener listener) {
-		super(graphics, controller, listener);
 	}
 
 	public Map<String, NeRow> getRows() {
@@ -122,18 +123,15 @@ public class NeGameState extends NeBaseGameState {
 				.sign(EControllerSignatures.END_BUTTON).load(ImagePaths.END_BUTTON).connect().get();
 		pickRowsButton = buttonBuilder.create(GUIDGenerator.get()).pos(1720, 490).size(100, 100)
 				.sign(EControllerSignatures.PICK_ROWS_BUTTON).load(ImagePaths.PICK_ROWS).connect().get();
-		submitPicksButton = buttonBuilder.create(GUIDGenerator.get()).pos(1820, 390).size(100, 100).sign(EControllerSignatures.SUBMIT_PICKS_BUTTON)
-				.load(ImagePaths.SUBMIT_PICKS).connect().get();
-		swapCardsButton = buttonBuilder.create(GUIDGenerator.get()).pos(1720, 390).size(100, 100).sign(EControllerSignatures.SWAP_CARDS_BUTTON)
-				.load(ImagePaths.SWAP_CARDS).connect().get();
+		submitPicksButton = buttonBuilder.create(GUIDGenerator.get()).pos(1820, 390).size(100, 100)
+				.sign(EControllerSignatures.SUBMIT_PICKS_BUTTON).load(ImagePaths.SUBMIT_PICKS).connect().get();
+		swapCardsButton = buttonBuilder.create(GUIDGenerator.get()).pos(1720, 390).size(100, 100)
+				.sign(EControllerSignatures.SWAP_CARDS_BUTTON).load(ImagePaths.SWAP_CARDS).connect().get();
 
 		pickSignaler = new NeDiode(GUIDGenerator.get(), getGraphics(), getListener());
 		pickSignaler.setup(64, 64, 1820, 390);
 		pickSignaler.connect();
 		pickSignaler.getGuiElement().setVisible(false);
-
-		deck = new NeDeck(GUIDGenerator.get(), getGraphics(), getListener(), getController());
-		deck.connect();
 
 		mainPlayer = new NePlayer(GUIDGenerator.get(), getGraphics(), getListener());
 		enemy = new NeEnemy(GUIDGenerator.get(), getGraphics(), getListener());
@@ -143,6 +141,9 @@ public class NeGameState extends NeBaseGameState {
 		enemy.setOpponentGuid(mainPlayer.getGuid());
 		mainPlayer.connect();
 		enemy.connect();
+
+		deck = new NeDeck(GUIDGenerator.get(), getGraphics(), getListener());
+		deck.connect();
 
 		preview = new NePreview(GUIDGenerator.get(), getGraphics(), getListener());
 		preview.connect();

@@ -23,6 +23,12 @@ public interface NeAbstractGameStateController {
 	public void moveCardFromTempToBottomOfDeck(String guid);
 	public void createCardInTemp(String type, String guid);
 	public void drawCard(String playerGuid);
+	public void afterDrawCard(String cardGuid, String cardType);
+	public void getDeckSize(String playerGuid);
+	public void afterGetDeckSize(int size);
+	public void afterConnected(String playerGuid);
+	public void afterOpponentHandChange(String cardGuid, boolean isRemoved);
+	public void afterOpponentPlayCard(String cardType, int rowNumber);
 	
 	public void endPlayerTurn(String playerGuid);
 	public void startPlayerTurn(String playerGuid);

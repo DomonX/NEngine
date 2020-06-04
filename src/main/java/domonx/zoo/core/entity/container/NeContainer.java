@@ -1,6 +1,7 @@
 package domonx.zoo.core.entity.container;
 
 import java.awt.Graphics;
+import java.util.ConcurrentModificationException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,10 +34,11 @@ public class NeContainer extends NeImage implements INeContainer {
 			return;
 		}
 		super.render(g);
-		content.forEach((String key, INeEntity item) -> {
-			item.render(g);
-			item.renderDev(g);
-		});
+		try {
+			content.forEach((String key, INeEntity item) -> item.render(g));
+		} catch (ConcurrentModificationException e) {
+
+		}
 	}
 
 	@Override
@@ -54,7 +56,7 @@ public class NeContainer extends NeImage implements INeContainer {
 		content.remove(guid);
 		layout();
 	}
-	
+
 	@Override
 	public void destroy(String guid) {
 		NeEntity removedElement = content.remove(guid);
@@ -81,9 +83,7 @@ public class NeContainer extends NeImage implements INeContainer {
 	@Override
 	public void setScale(double scale) {
 		super.setScale(scale);
-		content.forEach((String key, NeEntity item) -> {
-			item.setScale(scale);
-		});
+		content.forEach((String key, NeEntity item) -> item.setScale(scale));
 		layout();
 	}
 
@@ -93,7 +93,10 @@ public class NeContainer extends NeImage implements INeContainer {
 	}
 
 	public void tick(int hertz) {
-		content.forEach((String key, INeEntity item) -> item.tick(hertz));
+		try {
+			content.forEach((String key, INeEntity item) -> item.tick(hertz));
+		} catch (ConcurrentModificationException e) {
+		}
 	}
 
 	@Override
@@ -126,12 +129,10 @@ public class NeContainer extends NeImage implements INeContainer {
 	public INeLayout getLayout() {
 		return this.layout;
 	}
-	
-	@Override 
+
+	@Override
 	public void destroy() {
-		content.forEach((String key, INeEntity item) -> {
-			item.destroy();
-		});
+		content.forEach((String key, INeEntity item) -> item.destroy());
 		super.destroy();
 	}
 

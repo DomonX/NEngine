@@ -3,6 +3,7 @@ package domonx.zoo.core.entity;
 import java.awt.Dimension;
 import java.awt.Graphics;
 
+import domonx.zoo.core.configuration.NeConfiguration;
 import domonx.zoo.core.storage.INeImageStorage;
 import domonx.zoo.core.storage.NeCachedImage;
 
@@ -39,6 +40,9 @@ public class NeImage extends NeEntity {
 
 	@Override
 	public void render(Graphics g) {
+		if(NeConfiguration.isDeveloperMode()) {
+			renderDev(g);
+		}
 		if(valid && visible) {
 			g.drawImage(image.getImage(), (int) (getX() + imageShiftX), (int) (getY() + imageShiftY), null);
 		}

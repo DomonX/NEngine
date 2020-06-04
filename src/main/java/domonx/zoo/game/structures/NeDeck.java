@@ -18,47 +18,21 @@ import domonx.zoo.window.NeGraphicsModule;
 
 public class NeDeck extends NeStructureElement<NeContainer>{
 	
-	public List<String> cards = new ArrayList<>();
-	
-	private NeAbstractGameStateController state;
-	
-	private CardFactory cF;
+	public List<String> cards;
 	
 	private NeText counterGui;
 
-	public NeDeck(String guid, NeGraphicsModule graphics, NeAbstractActionListener listener, NeAbstractGameStateController state) {
+	public NeDeck(String guid, NeGraphicsModule graphics, NeAbstractActionListener listener) {
 		super(guid, ENeStructureType.NONE, graphics, listener);
-		this.state = state;
+		cards = new ArrayList<>();
 		prepareGUI();
-		cF = new CardFactory(graphics, listener, state);
-		loadAndShuffle();	
 	}
 	
-	public String drawCard() {
-		if(cards.isEmpty()) {
-			loadAndShuffle();
+	public void fillUnknown(int size) {
+		cards.clear();
+		for(int i = 0; i < size; i++) {
+			cards.add("NE_UNKNOWN");
 		}
-		counterGui.setValue(Integer.toString(cards.size()));
-		return cards.remove(0);
-	}
-	
-	protected void loadAndShuffle() {
-		addCards(NeCardCodes.Chamaeleon, 20);
-		addCards(NeCardCodes.Spider, 20);
-		Random gen = new Random();
-		int cardsNumber = NeCardCodes.getCardNumber();
-		for(int i = 0; i < 20; i++) {
-			int index = gen.nextInt(cardsNumber);
-			addCards(NeCardCodes.getCard(index), 6);			
-		}
-		Collections.shuffle(cards);
-	}
-	
-	protected void addCards(String code, int number) {
-		for(int i = 0; i < number; i++) {
-			cards.add(code);
-		}
-		counterGui.setValue(Integer.toString(cards.size()));
 	}
 
 	@Override

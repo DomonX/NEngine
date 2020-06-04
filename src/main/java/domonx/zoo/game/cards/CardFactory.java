@@ -154,6 +154,9 @@ public class CardFactory {
 		if(cardCode.equals(NeCardCodes.Zebra)) {
 			return new CardZebra(GUID, graphics, listener, state);
 		}
+		if(cardCode.equals("NE_33_REWERS")) {
+			return new CardRewers(GUID, graphics, listener, state);
+		}
 		return null;
 	}
 }
