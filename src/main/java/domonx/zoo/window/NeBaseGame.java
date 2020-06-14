@@ -7,13 +7,11 @@ import domonx.zoo.game.state.NeGameState;
 
 import domonx.zoo.web.module.NeWebModule;
 
-public class NeBaseGame extends NeGame{
+public class NeBaseGame extends NeGame {
 
 	private NeBasePanel panel;
 	private NeGameState state;
-	
-	private NeGameStateController controller;
-	
+
 	private Thread webThread;
 
 	public NeBaseGame(JFrame window) {
@@ -29,14 +27,14 @@ public class NeBaseGame extends NeGame{
 	}
 
 	protected void createGameState() {
-		controller = new NeGameStateController();
+		NeGameStateController controller = new NeGameStateController();
 		NeWebModule web = new NeWebModule(controller);
 		controller.connectWeb(web);
 		webThread = new Thread(web);
 		webThread.start();
 		state = new NeGameState(panel.getGraphicsModule(), controller, controller);
+		web.connect();
 		controller.connectState(state);
-		controller.startGame();
 	}
 
 	@Override
@@ -49,6 +47,5 @@ public class NeBaseGame extends NeGame{
 		panel.tick(hertzPassed);
 		state.tick(hertzPassed);
 	}
-
 
 }

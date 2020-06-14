@@ -6,7 +6,7 @@
     </server>
 	<game>
 		<showFps>false</showFps>
-		<developerMode>false</developerMode>
+		<developerMode>true</developerMode>
 		<screen>
 			<width>1920</width>
 			<height>1080</height>
@@ -14,5 +14,5 @@
 		</screen>
 		<maxFps>60</maxFps>
 	</game>
-	<installPath>E:\Programowanie\Java\Eclipse\zoo</installPath>
+	<installPath>D:\Programowanie\Java\Eclipse\zoo</installPath>
 </conf>

@@ -10,6 +10,7 @@ import domonx.zoo.game.configuration.NeGameConfiguration;
 import domonx.zoo.game.enums.ENeStructureType;
 import domonx.zoo.game.interfaces.INeCard;
 import domonx.zoo.game.interfaces.NeAbstractGameStateController;
+import domonx.zoo.game.structures.gui.NeGuiRow;
 import domonx.zoo.window.NeGraphicsModule;
 
 public class NePlayer extends NeStructureElement<NeContainer> {
@@ -45,7 +46,7 @@ public class NePlayer extends NeStructureElement<NeContainer> {
 	}
 	
 	public boolean cardMovedOnRow(String cardGUID, String rowGUID, NeAbstractGameStateController eventStack) {
-		NeRow tempRow = rowsHolder.rows.get(rowGUID);
+		NeGuiRow tempRow = rowsHolder.rows.get(rowGUID);
 		NeCard tempCard = hand.getCards().get(cardGUID);
 		if(tempRow == null || tempCard == null) {
 			return false;
@@ -60,7 +61,7 @@ public class NePlayer extends NeStructureElement<NeContainer> {
 	}
 	
 	public void putCardOnRow(INeCard card, String rowGUID) {
-		NeRow tempRow = rowsHolder.rows.get(rowGUID);
+		NeGuiRow tempRow = rowsHolder.rows.get(rowGUID);
 		NeCard tempCard = (NeCard)(card);
 		if(tempRow == null || tempCard == null) {
 			return;
@@ -68,7 +69,7 @@ public class NePlayer extends NeStructureElement<NeContainer> {
 		tempRow.addCard(tempCard);
 	}
 	
-	public void initialize(Map<String, NeRow> registry) {
+	public void initialize(Map<String, NeGuiRow> registry) {
 		rowsHolder.connectRowsRegistry(registry);
 		rowsHolder.initialize();
 	}
@@ -89,6 +90,17 @@ public class NePlayer extends NeStructureElement<NeContainer> {
 	public void pickCard(INeCard card) {
 		points += card.getStrength();
 		rowsHolder.removeCard(card);
+	}
+	
+	public void pickCard(String cardGuid) {
+		INeCard pickedCard = rowsHolder.removeCard(cardGuid);
+		if(pickedCard != null) {
+			points += pickedCard.getStrength();
+		}
+	}
+	
+	public void setGuid(String guid) {
+		this.guid = guid;
 	}
 	
 	protected void prepareHolderAndHand() {

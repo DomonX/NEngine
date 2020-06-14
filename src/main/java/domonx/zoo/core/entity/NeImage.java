@@ -40,9 +40,6 @@ public class NeImage extends NeEntity {
 
 	@Override
 	public void render(Graphics g) {
-		if(NeConfiguration.isDeveloperMode()) {
-			renderDev(g);
-		}
 		if(valid && visible) {
 			g.drawImage(image.getImage(), (int) (getX() + imageShiftX), (int) (getY() + imageShiftY), null);
 		}

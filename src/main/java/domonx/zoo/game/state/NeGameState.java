@@ -17,13 +17,13 @@ import domonx.zoo.game.structures.NeDiode;
 import domonx.zoo.game.structures.NeEnemy;
 import domonx.zoo.game.structures.NePlayer;
 import domonx.zoo.game.structures.NePreview;
-import domonx.zoo.game.structures.NeRow;
 import domonx.zoo.game.structures.NeSpecializedButtonBuilder;
 import domonx.zoo.game.structures.NeStructureButton;
+import domonx.zoo.game.structures.gui.NeGuiRow;
 import domonx.zoo.window.NeGraphicsModule;
 
 public class NeGameState extends NeBaseGameState {
-	private Map<String, NeRow> rows;
+	private Map<String, NeGuiRow> rows;
 	private Map<String, INeCard> temporaryZone;
 	private List<INeCard> pickBuffer;
 
@@ -67,7 +67,7 @@ public class NeGameState extends NeBaseGameState {
 		this.currentState = currentState;
 	}
 
-	public Map<String, NeRow> getRows() {
+	public Map<String, NeGuiRow> getRows() {
 		return rows;
 	}
 
@@ -133,8 +133,8 @@ public class NeGameState extends NeBaseGameState {
 		pickSignaler.connect();
 		pickSignaler.getGuiElement().setVisible(false);
 
-		mainPlayer = new NePlayer(GUIDGenerator.get(), getGraphics(), getListener());
-		enemy = new NeEnemy(GUIDGenerator.get(), getGraphics(), getListener());
+		mainPlayer = new NePlayer("", getGraphics(), getListener());
+		enemy = new NeEnemy("", getGraphics(), getListener());
 		mainPlayer.initialize(rows);
 		enemy.initialize(rows);
 		mainPlayer.setOpponentGuid(enemy.getGuid());
@@ -147,6 +147,7 @@ public class NeGameState extends NeBaseGameState {
 
 		preview = new NePreview(GUIDGenerator.get(), getGraphics(), getListener());
 		preview.connect();
+		controller.informStateIsLoaded();
 	}
 
 	public NeStructureButton getSubmitPicksButton() {

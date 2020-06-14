@@ -1,0 +1,6 @@
+package domonx.zoo.web.messages;
+
+public enum NeWebMessageTypeResponse {
+	CARD_PLAYED, CLIENT_DATA, CONNECTED, CONNECTION_REFUSED, DECK_SIZE, DRAW, OPPONENT_HAND_CHANGE, CARDS_SWAPPED,
+	CARD_PICKED
+}

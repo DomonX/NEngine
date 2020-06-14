@@ -1,10 +1,8 @@
 package domonx.zoo.game.structures;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 import domonx.zoo.core.controller.NeContainerController;
 import domonx.zoo.core.entity.container.NeContainer;
@@ -14,20 +12,21 @@ import domonx.zoo.core.util.GUIDGenerator;
 import domonx.zoo.game.configuration.NeGameConfiguration;
 import domonx.zoo.game.enums.ENeStructureType;
 import domonx.zoo.game.interfaces.INeCard;
+import domonx.zoo.game.structures.gui.NeGuiRow;
 import domonx.zoo.window.NeGraphicsModule;
 
 public class NeRowsHolder extends NeStructureElement<NeContainer> {
 
-	public Map<String, NeRow> rows;
+	public Map<String, NeGuiRow> rows;
 	
-	private Map<String, NeRow> registry;
+	private Map<String, NeGuiRow> registry;
 
 	private int x;
 	private int y;
 
 	private String searchBuffer;
 
-	NeRowsHolder(String guid, NeGraphicsModule graphics, NeAbstractActionListener listener, int x, int y) {
+	public NeRowsHolder(String guid, NeGraphicsModule graphics, NeAbstractActionListener listener, int x, int y) {
 		super(guid, ENeStructureType.NONE, graphics, listener);
 		rows = new HashMap<>();
 		this.x = x;
@@ -35,8 +34,8 @@ public class NeRowsHolder extends NeStructureElement<NeContainer> {
 		prepareGUI();
 	}
 
-	public NeRow addRow() {
-		NeRow temp = new NeRow(GUIDGenerator.get(), graphics, listener, 0, 0);
+	public NeGuiRow addRow(String guid) {
+		NeGuiRow temp = new NeGuiRow(guid, graphics, listener, 0, 0);
 		rows.put(temp.guid, temp);
 		guiElement.add(temp.guiElement);
 		temp.guiElement.fit();
@@ -49,36 +48,36 @@ public class NeRowsHolder extends NeStructureElement<NeContainer> {
 		registry.remove(guid);
 	}
 	
-	public void connectRowsRegistry(Map<String, NeRow> registry) {
+	public void connectRowsRegistry(Map<String, NeGuiRow> registry) {
 		this.registry = registry;
 	}
 	
 	public void initialize() {
-		for(int i = 0; i < NeGameConfiguration.getBaseRowsPerPlayer(); i++) {
-			addRow();
-		}
+//		for(int i = 0; i < NeGameConfiguration.getBaseRowsPerPlayer(); i++) {
+//			addRow();
+//		}
 	}
 
 	public String hasItem(String key) {
 		searchBuffer = "";
-		rows.forEach((String rowKey, NeRow item) -> searchBuffer = item.hasItem(key) ? rowKey : searchBuffer);
+		rows.forEach((String rowKey, NeGuiRow item) -> searchBuffer = item.hasItem(key) ? rowKey : searchBuffer);
 		return searchBuffer;
 	}
 	
 	public void removeCard(INeCard card) {	
-		NeRow owner = rows.get(card.getRowGUID());
+		NeGuiRow owner = rows.get(card.getRowGUID());
 		if(owner == null) {
 			return;
 		}
 		owner.removeCard(card.getGuid());
 	}
 	
-	public void removeCard(String cardGuid) {
-		Optional<NeRow> owner = rows.values().stream().filter(i -> i.hasItem(cardGuid)).findFirst();
+	public INeCard removeCard(String cardGuid) {
+		Optional<NeGuiRow> owner = rows.values().stream().filter(i -> i.hasItem(cardGuid)).findFirst();
 		if(!owner.isPresent()) {
-			return;
+			return null;
 		}
-		owner.get().removeCard(cardGuid);
+		return owner.get().removeCard(cardGuid);
 	}
 
 	@Override

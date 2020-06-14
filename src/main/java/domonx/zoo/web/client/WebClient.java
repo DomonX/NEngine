@@ -12,9 +12,17 @@ public abstract class WebClient implements WebDataListener {
 	private boolean valid = true;
 
 	private Socket socket;
+	
+	private String ip;
+	private int port;
 
 	public WebClient(String ip, int port) {
 		super();
+		this.ip = ip;
+		this.port = port;
+	}
+	
+	public void connect() {
 		try {
 			socket = new Socket(ip, port);
 			System.out.println("Connected");

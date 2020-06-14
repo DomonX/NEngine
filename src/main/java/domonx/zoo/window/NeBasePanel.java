@@ -33,6 +33,7 @@ public class NeBasePanel extends JPanel implements INeTickListener, INeRenderabl
 	@Override
 	public void render(Graphics g) {
 		graphics.render(g);
+		renderDev(g);
 	}
 
 	@Override

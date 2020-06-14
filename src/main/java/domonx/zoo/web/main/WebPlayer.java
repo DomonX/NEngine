@@ -1,9 +1,27 @@
 package domonx.zoo.web.main;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+
+import domonx.zoo.core.util.GUIDGenerator;
+import domonx.zoo.game.structures.NeRow;
 
 public class WebPlayer {
-	public List<String> hand = new ArrayList<>();
-	public String guid = "";
+	public Map<String, String> hand;
+	public Map<String, NeRow> rows;
+	public String guid;
+	
+	public WebPlayer() {
+		hand = new HashMap<>();
+		rows = new HashMap<>();
+		guid = "";
+		addRow(GUIDGenerator.get());
+		addRow(GUIDGenerator.get());
+		addRow(GUIDGenerator.get());
+		addRow(GUIDGenerator.get());
+	}
+	
+	public void addRow(String guidRow) {
+		rows.put(guidRow, new NeRow(guidRow));
+	}
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import domonx.zoo.core.interfaces.INePickListener;
 import domonx.zoo.game.enums.ENePickModes;
+import domonx.zoo.web.main.WebPlayer;
 
 public interface NeAbstractGameStateController {
 	public void pickFromFriendlyRow(int number, INePickListener listener, String[] bannedGuids);
@@ -28,7 +29,11 @@ public interface NeAbstractGameStateController {
 	public void afterGetDeckSize(int size);
 	public void afterConnected(String playerGuid);
 	public void afterOpponentHandChange(String cardGuid, boolean isRemoved);
-	public void afterOpponentPlayCard(String cardType, int rowNumber);
+	public void afterOpponentPlayCard(String cardGuid, String rowGuid, String playerGuid, String cardCode);
+	public void afterDataConnected(WebPlayer player);
+	public void afterOpponentPickCard(String cardGuid, String playerGuid);
+	
+	public void informStateIsLoaded();
 	
 	public void endPlayerTurn(String playerGuid);
 	public void startPlayerTurn(String playerGuid);

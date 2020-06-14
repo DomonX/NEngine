@@ -16,7 +16,6 @@ import domonx.zoo.core.entity.NeEntity;
 import domonx.zoo.core.entity.NeImage;
 import domonx.zoo.core.interfaces.INePickListener;
 import domonx.zoo.core.interfaces.NeAbstractActionListener;
-import domonx.zoo.core.util.GUIDGenerator;
 import domonx.zoo.game.cards.CardFactory;
 import domonx.zoo.game.enums.EGameState;
 import domonx.zoo.game.enums.ENePickModes;
@@ -24,11 +23,16 @@ import domonx.zoo.game.interfaces.INeCard;
 import domonx.zoo.game.interfaces.NeAbstractGameStateController;
 import domonx.zoo.game.state.NeGameState;
 import domonx.zoo.game.structures.NeCard;
-import domonx.zoo.game.structures.NeDeck;
 import domonx.zoo.game.structures.NePlayer;
 import domonx.zoo.game.structures.NeRow;
+import domonx.zoo.game.structures.gui.NeGuiRow;
 import domonx.zoo.game.util.NeGameUtil;
-import domonx.zoo.web.connection.NeWebMessageRequest;
+import domonx.zoo.web.main.WebPlayer;
+import domonx.zoo.web.messages.NeWebMessageTypeRequest;
+import domonx.zoo.web.messages.requests.NeWebMessageCardPickedRequest;
+import domonx.zoo.web.messages.requests.NeWebMessageCardPlayedRequest;
+import domonx.zoo.web.messages.requests.NeWebMessageCardsSwappedRequest;
+import domonx.zoo.web.messages.requests.NeWebMessageRequest;
 import domonx.zoo.web.module.NeWebModule;
 
 public class NeGameStateController implements NeAbstractGameStateController, NeAbstractActionListener, INePickListener {
@@ -44,12 +48,18 @@ public class NeGameStateController implements NeAbstractGameStateController, NeA
 	private NeGameState state;
 
 	private INePickListener listener;
-	
+
 	private NeWebModule web;
-	
+
 	private Gson gson;
-	
+
 	private String webConnectionString;
+
+	private boolean stateIsLoaded = false;
+
+	private boolean gameAlreadyStarted = false;
+	
+	private CardFactory cf;
 
 	public NeGameStateController() {
 		super();
@@ -63,8 +73,9 @@ public class NeGameStateController implements NeAbstractGameStateController, NeA
 
 	public void connectState(NeGameState state) {
 		this.state = state;
+		cf = new CardFactory(state.getGraphics(), this, this);
 	}
-	
+
 	public void connectWeb(NeWebModule module) {
 		this.web = module;
 	}
@@ -124,14 +135,14 @@ public class NeGameStateController implements NeAbstractGameStateController, NeA
 	@Override
 	public void moveCardFromRowToTemp(String guid, String rowGuid) {
 		INeCard temp = state.getMainPlayer().rowsHolder.rows.get(rowGuid).cards.get(guid);
-		state.getMainPlayer().rowsHolder.rows.get(rowGuid).removeCard(guid);
+		state.getRows().get(rowGuid).removeCard(guid);
 		state.getTemporaryZone().put(guid, temp);
 	}
 
 	@Override
 	public void moveCardFromHandToTemp(String guid, String playerGuid) {
-		INeCard temp = state.getMainPlayer().hand.getCards().get(guid);
-		state.getMainPlayer().hand.removeCard(guid);
+		INeCard temp = getPlayerByGuid(playerGuid).hand.getCards().get(guid);
+		getPlayerByGuid(playerGuid).hand.removeCard(guid);
 		state.getTemporaryZone().put(temp.getGuid(), temp);
 	}
 
@@ -147,7 +158,7 @@ public class NeGameStateController implements NeAbstractGameStateController, NeA
 	public void moveCardFromTempToRow(String guid, String rowGuid) {
 		INeCard temp = state.getTemporaryZone().get(guid);
 		state.getTemporaryZone().remove(guid);
-		state.getMainPlayer().putCardOnRow(temp, rowGuid);
+		state.getRows().get(rowGuid).addCard((NeCard)temp);
 	}
 
 	@Override
@@ -164,9 +175,7 @@ public class NeGameStateController implements NeAbstractGameStateController, NeA
 
 	@Override
 	public void createCardInTemp(String type, String guid) {
-		CardFactory cf = new CardFactory(state.getGraphics(), this, this);
 		INeCard temp = cf.get(type, guid);
-		System.out.println(type);
 		state.getTemporaryZone().put(temp.getGuid(), temp);
 	}
 
@@ -234,7 +243,7 @@ public class NeGameStateController implements NeAbstractGameStateController, NeA
 		listener = this;
 		this.bannedGUIDs = findCardGuidsThatCannotBePickedFromRow();
 	}
-	
+
 	protected void setupCardsSwap() {
 		state.getPickBuffer().clear();
 		setState(EGameState.SWAPING_CARDS);
@@ -260,31 +269,33 @@ public class NeGameStateController implements NeAbstractGameStateController, NeA
 	}
 
 	protected void handleCardMoved(NeActionEntityMoved payload) {
-		if (state.getCurrentState() == EGameState.JUST_STARTED) {
-			setState(EGameState.PLAYING_CARDS);
-		}
 		NeEntity src = NeGameUtil.getEntityByPath(NeGameUtil.getArrayFromPath(payload.srcGUIDPath),
 				state.getGraphics().screen);
-		if (state.getCurrentState() != EGameState.PLAYING_CARDS) {
+		if (state.getCurrentState() != EGameState.PLAYING_CARDS && state.getCurrentState() != EGameState.JUST_STARTED) {
 			src.getController().returnOldPosition();
 			return;
 		}
 		int xPos = payload.data.x;
 		int yPos = payload.data.y;
 		boolean movePerformed = false;
+		NeGuiRow targetRow = null;
 		try {
-			Optional<NeRow> target = state.getRows().values().stream()
+			Optional<NeGuiRow> target = state.getRows().values().stream()
 					.filter(i -> i.guiElement.isPointInside(xPos, yPos)).reduce((a, b) -> {
 						throw new IllegalStateException("Multiple rows when searching for one");
 					});
 			if (target.isPresent()) {
+				targetRow = target.get();
 				movePerformed = state.getMainPlayer().cardMovedOnRow(src.getGUID(), target.get().guid, this);
 			}
 		} catch (IllegalStateException e) {
 			return;
 		}
-		if(movePerformed) {
-			web.c.write(src.getGUID() + " Played");
+		if (movePerformed) {
+			if (state.getCurrentState() == EGameState.JUST_STARTED) {
+				setState(EGameState.PLAYING_CARDS);
+			}
+			sendRequest(createCardPlayedRequest(targetRow.guid, src.getGUID()));
 		}
 		if (!movePerformed) {
 			src.getController().returnOldPosition();
@@ -327,6 +338,10 @@ public class NeGameStateController implements NeAbstractGameStateController, NeA
 
 	protected void handleCardBlured(NeActionEntityBlured payload) {
 		NeEntity src = NeGameUtil.getEntityByPath(payload.srcGUIDPath, state.getGraphics().screen);
+		if(src == null) {
+			System.out.println(payload.srcGUIDPath);
+			return;
+		}
 		state.getPreview().remove(src.getGUID());
 	}
 
@@ -363,7 +378,7 @@ public class NeGameStateController implements NeAbstractGameStateController, NeA
 		if (getPickMode() == ENePickModes.ROW) {
 			handleCardClickedPickModeRow(payload);
 		}
-		if(getPickMode() == ENePickModes.HAND) {
+		if (getPickMode() == ENePickModes.HAND) {
 			handleCardClickedPickModeHand(payload);
 		}
 	}
@@ -390,7 +405,7 @@ public class NeGameStateController implements NeAbstractGameStateController, NeA
 		}
 		addToPickBuffer(temp);
 	}
-	
+
 	protected void handleCardClickedPickModeHand(NeActionEntityClicked payload) {
 		NeEntity src = NeGameUtil.getEntityByPath(payload.srcGUIDPath, state.getGraphics().screen);
 		NeCard temp = state.getMainPlayer().hand.getCards().get(src.getGUID());
@@ -464,6 +479,16 @@ public class NeGameStateController implements NeAbstractGameStateController, NeA
 
 	@Override
 	public void startGame() {
+		if (gameAlreadyStarted) {
+			return;
+		}
+		if (webConnectionString == null) {
+			return;
+		}
+		if (!stateIsLoaded) {
+			return;
+		}
+		gameAlreadyStarted = true;
 		fillPlayerHand(state.getMainPlayer());
 		state.setCurrentState(EGameState.JUST_STARTED);
 	}
@@ -501,18 +526,30 @@ public class NeGameStateController implements NeAbstractGameStateController, NeA
 			state.getSwapCardsButton().getGuiElement().setVisible(false);
 		}
 	}
-	
+
 	protected void endPickingRows() {
-		getPickBuffer().forEach(i -> state.getMainPlayer().pickCard(i));
+		getPickBuffer().forEach(i -> {
+			NeWebMessageCardPickedRequest req = new NeWebMessageCardPickedRequest();
+			req.cardGuid = i.getGuid();
+			req.playerGuid = state.getMainPlayer().getGuid();
+			sendRequest(gson.toJson(req));
+			state.getMainPlayer().pickCard(i);
+		});
 	}
-	
+
 	protected void endSwapingCards() {
+		NeWebMessageCardsSwappedRequest req = new NeWebMessageCardsSwappedRequest();
+		ArrayList<String> guids = new ArrayList<>();
 		getPickBuffer().forEach(i -> {
 			String guid = i.getGuid();
+			guids.add(guid);
 			moveCardFromHandToTemp(guid, state.getMainPlayer().getGuid());
 			moveCardFromTempToBottomOfDeck(guid);
 			drawCard(state.getMainPlayer().getGuid());
 		});
+		req.playerGuid = state.getMainPlayer().getGuid();
+		req.guids = guids.toArray(new String[0]);
+		sendRequest(gson.toJson(req));
 	}
 
 	@Override
@@ -528,20 +565,20 @@ public class NeGameStateController implements NeAbstractGameStateController, NeA
 	@Override
 	public void moveCardFromTempToTopOfDeck(String guid) {
 		INeCard temp = state.getTemporaryZone().get(guid);
-		((NeCard)(temp)).getGuiElement().destroy();
+		((NeCard) (temp)).getGuiElement().destroy();
 		state.getDeck().cards.add(temp.getCode());
 	}
 
 	@Override
 	public void moveCardFromTempToBottomOfDeck(String guid) {
 		INeCard temp = state.getTemporaryZone().get(guid);
-		((NeCard)(temp)).getGuiElement().destroy();
+		((NeCard) (temp)).getGuiElement().destroy();
 		state.getDeck().cards.add(state.getDeck().cards.size(), temp.getCode());
 	}
 
 	@Override
 	public void drawCard(String playerGuid) {
-		sendRequest("draw", "");	
+		sendRequest(createBaseRequest(NeWebMessageTypeRequest.DRAW));
 	}
 
 	@Override
@@ -552,45 +589,90 @@ public class NeGameStateController implements NeAbstractGameStateController, NeA
 
 	@Override
 	public void getDeckSize(String playerGuid) {
-		sendRequest("deckSize", "");	
+		sendRequest(createBaseRequest(NeWebMessageTypeRequest.DECK_SIZE));
 	}
 
 	@Override
 	public void afterGetDeckSize(int size) {
 		try {
-			state.getDeck().fillUnknown(size);	
-		} catch(Exception e) {
-			
+			state.getDeck().fillUnknown(size);
+		} catch (Exception e) {
+
 		}
 	}
-	
-	private void sendRequest(String type, String message) {
-		NeWebMessageRequest msg = new NeWebMessageRequest();
+
+	private void sendRequest(String message) {
+		web.c.write(message);
+	}
+
+	private String createBaseRequest(NeWebMessageTypeRequest type) {
+		NeWebMessageRequest msg = new NeWebMessageRequest(type);
 		msg.playerGuid = webConnectionString;
-		msg.type = type;
-		msg.message = message;
-		String webMessage = gson.toJson(msg);
-		web.c.write(webMessage);	
+		return gson.toJson(msg);
+	}
+
+	private String createCardPlayedRequest(String rowGuid, String cardGuid) {
+		NeWebMessageCardPlayedRequest msg = new NeWebMessageCardPlayedRequest(cardGuid, rowGuid);
+		msg.playerGuid = webConnectionString;
+		return gson.toJson(msg);
 	}
 
 	@Override
 	public void afterConnected(String playerGuid) {
 		this.webConnectionString = playerGuid;
+		state.getMainPlayer().setGuid(playerGuid);
+		startGame();
 	}
 
 	@Override
 	public void afterOpponentHandChange(String cardGuid, boolean isRemoved) {
-		if(isRemoved) {
-			state.getEnemy().hand.getCards().remove(cardGuid);
+		if (isRemoved) {
+			state.getEnemy().hand.removeCard(cardGuid);
 			return;
 		}
 		createCardInTemp("NE_33_REWERS", cardGuid);
-		moveCardFromTempToHand(cardGuid, state.getEnemy().getGuid());		
+		moveCardFromTempToHand(cardGuid, state.getEnemy().getGuid());
 	}
 
 	@Override
-	public void afterOpponentPlayCard(String cardType, int rowNumber) {
-		
-	}	
+	public void informStateIsLoaded() {
+		stateIsLoaded = true;
+		startGame();
+	}
+
+	@Override
+	public void afterDataConnected(WebPlayer player) {
+		NePlayer playrFound = this.getPlayerByGuid(player.guid);
+		NePlayer playr;
+		if (playrFound == null) {
+			playr = state.getEnemy();
+			state.getEnemy().setGuid(player.guid);
+		} else {
+			playr = playrFound;
+		}
+		if(player.guid.equals(webConnectionString)) {
+			System.out.println(player.rows.size());
+		}
+		player.rows.forEach((String guid, NeRow row) -> {
+			playr.rowsHolder.addRow(row.guid);
+			row.cards.forEach((String guidC, String card) -> {
+				INeCard temp = cf.get(card, guidC);
+				playr.putCardOnRow(temp, row.guid);
+			});
+			player.addRow(row.guid);
+		});
+		player.hand.forEach((String key, String code) -> playr.hand.addCard(cf.get(code, key)));
+	}
+
+	@Override
+	public void afterOpponentPlayCard(String cardGuid, String rowGuid, String playerGuid, String cardCode) {
+		getPlayerByGuid(playerGuid).hand.removeCard(cardGuid);
+		state.getRows().get(rowGuid).addCard(this.cf.get(cardCode, cardGuid));
+	}
+
+	@Override
+	public void afterOpponentPickCard(String cardGuid, String playerGuid) {
+		getPlayerByGuid(playerGuid).pickCard(cardGuid);
+	}
 
 }

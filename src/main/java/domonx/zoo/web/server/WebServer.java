@@ -44,6 +44,12 @@ public abstract class WebServer implements WebClientWaiter, WebDataListener{
 			client.write(message);
 		});
 	}
+	
+	public void toAll(String message) {
+		clients.forEach((String key, WebHandler client) -> {
+			client.write(message);
+		});
+	}
 
 	@Override
 	public void addClient(Socket client) {

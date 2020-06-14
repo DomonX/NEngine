@@ -16,7 +16,7 @@ public abstract class NeCard extends NeStructureElement<NeContainer> implements 
 	protected int strenght;
 	protected int additionalStrenght;
 	protected String src;
-	protected String rowGUID;
+	private String rowGUID;
 	protected String playerGUID;
 	protected String enemyGUID;
 	protected NeAbstractGameStateController controller;
@@ -153,5 +153,9 @@ public abstract class NeCard extends NeStructureElement<NeContainer> implements 
 		guiElement.setHeight(300);
 		guiElement.setScale(1);
 		guiElement.load(src);
+	}
+
+	public void setRowGUID(String rowGUID) {
+		this.rowGUID = rowGUID;
 	}
 }
