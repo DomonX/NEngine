@@ -12,6 +12,7 @@ public class CardCheetah extends NeCard{
 	public CardCheetah(String guid, NeGraphicsModule graphics, NeAbstractActionListener listener, NeAbstractGameStateController state) {
 		super(guid, "assets\\EN\\Cheetah.png", graphics, listener, state);
 		code =  NeCardCodes.Cheetah;
+		strenght = 2;
 	}
 
 }

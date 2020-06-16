@@ -12,6 +12,7 @@ public class CardMeerkat extends NeCard{
 	public CardMeerkat(String guid, NeGraphicsModule graphics, NeAbstractActionListener listener, NeAbstractGameStateController state) {
 		super(guid, "assets\\EN\\Meerkat.png", graphics, listener, state);
 		code =  NeCardCodes.Meerkat;
+		strenght = 1;
 	}
 
 }

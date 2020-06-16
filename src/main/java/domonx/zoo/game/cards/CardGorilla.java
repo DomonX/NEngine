@@ -12,6 +12,7 @@ public class CardGorilla extends NeCard{
 	public CardGorilla(String guid, NeGraphicsModule graphics, NeAbstractActionListener listener, NeAbstractGameStateController state) {
 		super(guid, "assets\\EN\\Gorilla.png", graphics, listener, state);
 		code =  NeCardCodes.Gorilla;
+		strenght = 3;
 	}
 
 }

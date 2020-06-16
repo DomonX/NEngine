@@ -12,6 +12,7 @@ public class CardRat extends NeCard{
 	public CardRat(String guid, NeGraphicsModule graphics, NeAbstractActionListener listener, NeAbstractGameStateController state) {
 		super(guid, "assets\\EN\\Rat.png", graphics, listener, state);
 		code =  NeCardCodes.Rat;
+		strenght = 1;
 	}
 
 }

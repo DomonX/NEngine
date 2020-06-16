@@ -12,6 +12,7 @@ public class CardShark extends NeCard{
 	public CardShark(String guid, NeGraphicsModule graphics, NeAbstractActionListener listener, NeAbstractGameStateController state) {
 		super(guid, "assets\\EN\\Shark.png", graphics, listener, state);
 		code =  NeCardCodes.Shark;
+		strenght = 7;
 	}
 
 }

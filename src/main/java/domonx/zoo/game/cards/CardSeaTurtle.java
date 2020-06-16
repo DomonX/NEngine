@@ -12,6 +12,7 @@ public class CardSeaTurtle extends NeCard{
 	public CardSeaTurtle(String guid, NeGraphicsModule graphics, NeAbstractActionListener listener, NeAbstractGameStateController state) {
 		super(guid, "assets\\EN\\SeaTurtle.png", graphics, listener, state);
 		code =  NeCardCodes.SeaTurtle;
+		strenght = 2;
 	}
 
 }

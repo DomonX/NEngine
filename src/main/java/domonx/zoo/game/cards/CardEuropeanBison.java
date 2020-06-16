@@ -12,6 +12,7 @@ public class CardEuropeanBison extends NeCard{
 	public CardEuropeanBison(String guid, NeGraphicsModule graphics, NeAbstractActionListener listener, NeAbstractGameStateController state) {
 		super(guid, "assets\\EN\\EuropeanBison.png", graphics, listener, state);
 		code =  NeCardCodes.EuropeanBison;
+		strenght = 3;
 	}
 
 }

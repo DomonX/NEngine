@@ -12,6 +12,7 @@ public class CardCougar extends NeCard{
 	public CardCougar(String guid, NeGraphicsModule graphics, NeAbstractActionListener listener, NeAbstractGameStateController state) {
 		super(guid, "assets\\EN\\Cougar.png", graphics, listener, state);
 		code =  NeCardCodes.Cougar;
+		strenght = 2;
 	}
 
 }

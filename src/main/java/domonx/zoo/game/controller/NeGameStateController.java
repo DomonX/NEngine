@@ -534,6 +534,8 @@ public class NeGameStateController implements NeAbstractGameStateController, NeA
 			req.playerGuid = state.getMainPlayer().getGuid();
 			sendRequest(gson.toJson(req));
 			state.getMainPlayer().pickCard(i);
+			System.out.println(Integer.toString(state.getMainPlayer().points));
+			state.getPlayerPointsLabel().setValue(Integer.toString(state.getMainPlayer().points));
 		});
 	}
 

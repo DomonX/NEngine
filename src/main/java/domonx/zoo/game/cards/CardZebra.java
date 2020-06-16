@@ -12,6 +12,7 @@ public class CardZebra extends NeCard{
 	public CardZebra(String guid, NeGraphicsModule graphics, NeAbstractActionListener listener, NeAbstractGameStateController state) {
 		super(guid, "assets\\EN\\Zebra.png", graphics, listener, state);
 		code =  NeCardCodes.Zebra;
+		strenght = 2;
 	}
 
 }

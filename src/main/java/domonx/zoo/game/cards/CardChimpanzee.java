@@ -12,6 +12,7 @@ public class CardChimpanzee extends NeCard{
 	public CardChimpanzee(String guid, NeGraphicsModule graphics, NeAbstractActionListener listener, NeAbstractGameStateController state) {
 		super(guid, "assets\\EN\\Chimpanzee.png", graphics, listener, state);
 		code =  NeCardCodes.Chimpanzee;
+		strenght = 3;
 	}
 
 }

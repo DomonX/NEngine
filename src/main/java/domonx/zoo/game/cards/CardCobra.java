@@ -12,6 +12,7 @@ public class CardCobra extends NeCard{
 	public CardCobra(String guid, NeGraphicsModule graphics, NeAbstractActionListener listener, NeAbstractGameStateController state) {
 		super(guid, "assets\\EN\\Cobra.png", graphics, listener, state);
 		code =  NeCardCodes.Cobra;
+		strenght = 2;
 	}
 
 }

@@ -12,6 +12,7 @@ public class CardWeasel extends NeCard{
 	public CardWeasel(String guid, NeGraphicsModule graphics, NeAbstractActionListener listener, NeAbstractGameStateController state) {
 		super(guid, "assets\\EN\\Weasel.png", graphics, listener, state);
 		code =  NeCardCodes.Weasel;
+		strenght = 2;
 	}
 
 }

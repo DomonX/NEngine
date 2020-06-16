@@ -12,6 +12,7 @@ public class CardBlackPanther extends NeCard{
 	public CardBlackPanther(String guid, NeGraphicsModule graphics, NeAbstractActionListener listener, NeAbstractGameStateController state) {
 		super(guid, "assets\\EN\\BlackPanther.png", graphics, listener, state);
 		code =  NeCardCodes.BlackPanther;
+		strenght = 4;
 	}
 
 }

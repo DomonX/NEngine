@@ -12,6 +12,7 @@ public class CardHyena extends NeCard{
 	public CardHyena(String guid, NeGraphicsModule graphics, NeAbstractActionListener listener, NeAbstractGameStateController state) {
 		super(guid, "assets\\EN\\Hyena.png", graphics, listener, state);
 		code =  NeCardCodes.Hyena;
+		strenght = 0;
 	}
 
 }

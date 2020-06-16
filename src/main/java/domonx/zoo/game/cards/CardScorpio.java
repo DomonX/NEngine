@@ -12,6 +12,7 @@ public class CardScorpio extends NeCard{
 	public CardScorpio(String guid, NeGraphicsModule graphics, NeAbstractActionListener listener, NeAbstractGameStateController state) {
 		super(guid, "assets\\EN\\Scorpio.png", graphics, listener, state);
 		code =  NeCardCodes.Scorpio;
+		strenght = 2;
 	}
 
 }

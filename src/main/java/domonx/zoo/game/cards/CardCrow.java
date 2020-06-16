@@ -12,6 +12,7 @@ public class CardCrow extends NeCard{
 	public CardCrow(String guid, NeGraphicsModule graphics, NeAbstractActionListener listener, NeAbstractGameStateController state) {
 		super(guid, "assets\\EN\\Crow.png", graphics, listener, state);
 		code =  NeCardCodes.Crow;
+		strenght = 1;
 	}
 
 }

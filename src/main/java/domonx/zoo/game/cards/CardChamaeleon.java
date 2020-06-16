@@ -12,6 +12,7 @@ public class CardChamaeleon extends NeCard{
 	public CardChamaeleon(String guid, NeGraphicsModule graphics, NeAbstractActionListener listener, NeAbstractGameStateController state) {
 		super(guid, "assets\\EN\\Chamaeleon.png", graphics, listener, state);
 		code =  NeCardCodes.Chamaeleon;
+		strenght = 2;
 	}
 
 }

@@ -12,6 +12,7 @@ public class CardSpider extends NeCard{
 	public CardSpider(String guid, NeGraphicsModule graphics, NeAbstractActionListener listener, NeAbstractGameStateController state) {
 		super(guid, "assets\\EN\\Spider.png", graphics, listener, state);
 		code =  NeCardCodes.Spider;
+		strenght = 2;
 	}
 
 }

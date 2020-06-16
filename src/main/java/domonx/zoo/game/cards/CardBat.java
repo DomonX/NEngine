@@ -7,11 +7,12 @@ import domonx.zoo.game.interfaces.NeAbstractGameStateController;
 import domonx.zoo.game.structures.NeCard;
 import domonx.zoo.window.NeGraphicsModule;
 
-public class CardBat extends NeCard{
+public class CardBat extends NeCard {
 
 	public CardBat(String guid, NeGraphicsModule graphics, NeAbstractActionListener listener, NeAbstractGameStateController state) {
 		super(guid, "assets\\EN\\Bat.png", graphics, listener, state);
 		code =  NeCardCodes.Bat;
+		strenght = 1;
 	}
 
 }

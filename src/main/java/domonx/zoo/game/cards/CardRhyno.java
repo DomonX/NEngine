@@ -12,6 +12,7 @@ public class CardRhyno extends NeCard{
 	public CardRhyno(String guid, NeGraphicsModule graphics, NeAbstractActionListener listener, NeAbstractGameStateController state) {
 		super(guid, "assets\\EN\\Rhyno.png", graphics, listener, state);
 		code =  NeCardCodes.Rhyno;
+		strenght = 3;
 	}
 
 }

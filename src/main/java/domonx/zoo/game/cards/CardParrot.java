@@ -12,6 +12,7 @@ public class CardParrot extends NeCard{
 	public CardParrot(String guid, NeGraphicsModule graphics, NeAbstractActionListener listener, NeAbstractGameStateController state) {
 		super(guid, "assets\\EN\\Parrot.png", graphics, listener, state);
 		code =  NeCardCodes.Parrot;
+		strenght = 2;
 	}
 
 }

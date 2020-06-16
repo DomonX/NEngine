@@ -12,6 +12,7 @@ public class CardLion extends NeCard{
 	public CardLion(String guid, NeGraphicsModule graphics, NeAbstractActionListener listener, NeAbstractGameStateController state) {
 		super(guid, "assets\\EN\\Lion.png", graphics, listener, state);
 		code =  NeCardCodes.Lion;
+		strenght = 7;
 	}
 
 }

@@ -12,6 +12,7 @@ public class CardVulture extends NeCard{
 	public CardVulture(String guid, NeGraphicsModule graphics, NeAbstractActionListener listener, NeAbstractGameStateController state) {
 		super(guid, "assets\\EN\\Vulture.png", graphics, listener, state);
 		code =  NeCardCodes.Vulture;
+		strenght = 1;
 	}
 
 }

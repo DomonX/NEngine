@@ -12,6 +12,7 @@ public class CardElephant extends NeCard{
 	public CardElephant(String guid, NeGraphicsModule graphics, NeAbstractActionListener listener, NeAbstractGameStateController state) {
 		super(guid, "assets\\EN\\Elephant.png", graphics, listener, state);
 		code =  NeCardCodes.Elephant;
+		strenght = 9;
 	}
 
 }

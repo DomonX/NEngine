@@ -12,6 +12,7 @@ public class CardWolf extends NeCard{
 	public CardWolf(String guid, NeGraphicsModule graphics, NeAbstractActionListener listener, NeAbstractGameStateController state) {
 		super(guid, "assets\\EN\\Wolf.png", graphics, listener, state);
 		code =  NeCardCodes.Wolf;
+		strenght = 3;
 	}
 
 }

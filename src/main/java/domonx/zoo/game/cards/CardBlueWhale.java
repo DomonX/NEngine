@@ -12,6 +12,7 @@ public class CardBlueWhale extends NeCard{
 	public CardBlueWhale(String guid, NeGraphicsModule graphics, NeAbstractActionListener listener, NeAbstractGameStateController state) {
 		super(guid, "assets\\EN\\BlueWhale.png", graphics, listener, state);
 		code =  NeCardCodes.BlueWhale;
+		strenght = 12;
 	}
 
 }

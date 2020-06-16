@@ -12,6 +12,7 @@ public class CardSloth extends NeCard{
 	public CardSloth(String guid, NeGraphicsModule graphics, NeAbstractActionListener listener, NeAbstractGameStateController state) {
 		super(guid, "assets\\EN\\Sloth.png", graphics, listener, state);
 		code =  NeCardCodes.Sloth;
+		strenght = 2;
 	}
 
 }

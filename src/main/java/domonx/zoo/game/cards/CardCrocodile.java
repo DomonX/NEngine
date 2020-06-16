@@ -12,6 +12,7 @@ public class CardCrocodile extends NeCard{
 	public CardCrocodile(String guid, NeGraphicsModule graphics, NeAbstractActionListener listener, NeAbstractGameStateController state) {
 		super(guid, "assets\\EN\\Crocodile.png", graphics, listener, state);
 		code =  NeCardCodes.Crocodile;
+		strenght = 2;
 	}
 
 }

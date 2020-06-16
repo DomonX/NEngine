@@ -12,6 +12,7 @@ public class CardHorse extends NeCard{
 	public CardHorse(String guid, NeGraphicsModule graphics, NeAbstractActionListener listener, NeAbstractGameStateController state) {
 		super(guid, "assets\\EN\\Horse.png", graphics, listener, state);
 		code =  NeCardCodes.Horse;
+		strenght = 3;
 	}
 
 }

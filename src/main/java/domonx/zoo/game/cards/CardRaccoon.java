@@ -12,6 +12,7 @@ public class CardRaccoon extends NeCard{
 	public CardRaccoon(String guid, NeGraphicsModule graphics, NeAbstractActionListener listener, NeAbstractGameStateController state) {
 		super(guid, "assets\\EN\\Raccoon.png", graphics, listener, state);
 		code =  NeCardCodes.Raccoon;
+		strenght = 1;
 	}
 
 }

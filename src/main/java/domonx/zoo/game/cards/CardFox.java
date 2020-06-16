@@ -12,6 +12,7 @@ public class CardFox extends NeCard{
 	public CardFox(String guid, NeGraphicsModule graphics, NeAbstractActionListener listener, NeAbstractGameStateController state) {
 		super(guid, "assets\\EN\\Fox.png", graphics, listener, state);
 		code =  NeCardCodes.Fox;
+		strenght = 2;
 	}
 
 }

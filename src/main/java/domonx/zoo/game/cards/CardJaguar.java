@@ -12,6 +12,7 @@ public class CardJaguar extends NeCard{
 	public CardJaguar(String guid, NeGraphicsModule graphics, NeAbstractActionListener listener, NeAbstractGameStateController state) {
 		super(guid, "assets\\EN\\Jaguar.png", graphics, listener, state);
 		code =  NeCardCodes.Jaguar;
+		strenght = 4;
 	}
 
 }

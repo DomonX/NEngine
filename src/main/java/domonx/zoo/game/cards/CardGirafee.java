@@ -12,6 +12,7 @@ public class CardGirafee extends NeCard{
 	public CardGirafee(String guid, NeGraphicsModule graphics, NeAbstractActionListener listener, NeAbstractGameStateController state) {
 		super(guid, "assets\\EN\\Girafee.png", graphics, listener, state);
 		code =  NeCardCodes.Girafee;
+		strenght = 3;
 	}
 
 }

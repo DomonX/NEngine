@@ -138,7 +138,6 @@ domonx\zoo\game\state\NeBaseGameState.class
 domonx\zoo\web\main\SpecializedWebClient.class
 domonx\zoo\core\storage\NeCachedImageResize.class
 domonx\zoo\game\consts\ImagePaths.class
-domonx\zoo\game\structures\NeSwapCardsButton.class
 domonx\zoo\web\module\NeServer.class
 domonx\zoo\core\entity\NeEntity.class
 domonx\zoo\game\structures\NeDiode.class

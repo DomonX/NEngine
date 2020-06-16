@@ -12,6 +12,7 @@ public class CardTiger extends NeCard{
 	public CardTiger(String guid, NeGraphicsModule graphics, NeAbstractActionListener listener, NeAbstractGameStateController state) {
 		super(guid, "assets\\EN\\Tiger.png", graphics, listener, state);
 		code =  NeCardCodes.Tiger;
+		strenght = 2;
 	}
 
 }

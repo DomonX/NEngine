@@ -12,6 +12,7 @@ public class CardOwl extends NeCard{
 	public CardOwl(String guid, NeGraphicsModule graphics, NeAbstractActionListener listener, NeAbstractGameStateController state) {
 		super(guid, "assets\\EN\\Owl.png", graphics, listener, state);
 		code =  NeCardCodes.Owl;
+		strenght = 1;
 	}
 
 }

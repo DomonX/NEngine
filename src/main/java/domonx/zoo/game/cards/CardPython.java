@@ -12,6 +12,7 @@ public class CardPython extends NeCard{
 	public CardPython(String guid, NeGraphicsModule graphics, NeAbstractActionListener listener, NeAbstractGameStateController state) {
 		super(guid, "assets\\EN\\Python.png", graphics, listener, state);
 		code =  NeCardCodes.Python;
+		strenght = 1;
 	}
 
 }

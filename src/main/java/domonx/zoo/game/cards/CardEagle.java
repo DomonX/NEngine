@@ -12,6 +12,7 @@ public class CardEagle extends NeCard{
 	public CardEagle(String guid, NeGraphicsModule graphics, NeAbstractActionListener listener, NeAbstractGameStateController state) {
 		super(guid, "assets\\EN\\Eagle.png", graphics, listener, state);
 		code =  NeCardCodes.Eagle;
+		strenght = 2;
 	}
 
 }

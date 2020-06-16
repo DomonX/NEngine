@@ -1,10 +1,12 @@
 package domonx.zoo.game.state;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import domonx.zoo.controls.NeText;
 import domonx.zoo.core.controller.EControllerSignatures;
 import domonx.zoo.core.interfaces.NeAbstractActionListener;
 import domonx.zoo.core.util.GUIDGenerator;
@@ -41,6 +43,13 @@ public class NeGameState extends NeBaseGameState {
 	private NeStructureButton pickRowsButton;
 	private NeStructureButton swapCardsButton;
 	private NeStructureButton submitPicksButton;
+
+	public NeText getPlayerPointsLabel() {
+		return playerPointsLabel;
+	}
+
+	private NeText playerPointsLabel;
+	
 
 	public NeGameState(NeGraphicsModule graphics, NeAbstractGameStateController controller,
 			NeAbstractActionListener listener) {
@@ -147,6 +156,14 @@ public class NeGameState extends NeBaseGameState {
 
 		preview = new NePreview(GUIDGenerator.get(), getGraphics(), getListener());
 		preview.connect();
+		
+		playerPointsLabel = new NeText(GUIDGenerator.get());
+		playerPointsLabel.move(50, 900);
+		playerPointsLabel.setBackgroundColor(new Color(255,255,255));
+		playerPointsLabel.setTextColor(new Color(0,0,0));
+		getGraphics().screen.add(playerPointsLabel);
+		
+		
 		controller.informStateIsLoaded();
 	}
 

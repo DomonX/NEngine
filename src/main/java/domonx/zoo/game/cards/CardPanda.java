@@ -12,6 +12,7 @@ public class CardPanda extends NeCard{
 	public CardPanda(String guid, NeGraphicsModule graphics, NeAbstractActionListener listener, NeAbstractGameStateController state) {
 		super(guid, "assets\\EN\\Panda.png", graphics, listener, state);
 		code =  NeCardCodes.Panda;
+		strenght = 1;
 	}
 
 }

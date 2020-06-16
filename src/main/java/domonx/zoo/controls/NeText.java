@@ -11,6 +11,16 @@ public class NeText extends NeEntity{
 	private String value = "0";
 	
 	private Color backgroundColor;
+	
+	private Color textColor;
+
+	public Color getTextColor() {
+		return textColor;
+	}
+
+	public void setTextColor(Color textColor) {
+		this.textColor = textColor;
+	}
 
 	public Color getBackgroundColor() {
 		return backgroundColor;
@@ -30,6 +40,8 @@ public class NeText extends NeEntity{
 
 	public NeText(String guid) {
 		super(guid);
+		this.backgroundColor = new Color(255,255,255);
+		this.textColor = new Color(0,0,0);
 	}
 
 	@Override
@@ -38,7 +50,7 @@ public class NeText extends NeEntity{
 		Font retFont = g.getFont();
 		g.setColor(backgroundColor);
 		g.fillRect((int)(getX()), (int)(getY()), (int)(getWidth()), (int)(getHeight()));
-		g.setColor(new Color(255,0,0));
+		g.setColor(textColor);
 		g.setFont(new Font("Bauhaus 93", 0, 25));
 		g.drawString(value, (int)(getX()), (int)(getY() + g.getFont().getSize()));		
 		g.setColor(retColor);

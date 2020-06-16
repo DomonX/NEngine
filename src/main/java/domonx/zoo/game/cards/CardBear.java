@@ -12,6 +12,7 @@ public class CardBear extends NeCard{
 	public CardBear(String guid, NeGraphicsModule graphics, NeAbstractActionListener listener, NeAbstractGameStateController state) {
 		super(guid, "assets\\EN\\Bear.png", graphics, listener, state);
 		code =  NeCardCodes.Bear;
+		strenght = 3;
 	}
 
 }

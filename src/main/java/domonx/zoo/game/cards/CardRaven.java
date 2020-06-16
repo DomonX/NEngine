@@ -12,6 +12,7 @@ public class CardRaven extends NeCard{
 	public CardRaven(String guid, NeGraphicsModule graphics, NeAbstractActionListener listener, NeAbstractGameStateController state) {
 		super(guid, "assets\\EN\\Raven.png", graphics, listener, state);
 		code =  NeCardCodes.Raven;
+		strenght = 2;
 	}
 
 }
