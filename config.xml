@@ -6,7 +6,7 @@
     </server>
 	<game>
 		<showFps>false</showFps>
-		<developerMode>true</developerMode>
+		<developerMode>false</developerMode>
 		<screen>
 			<width>1920</width>
 			<height>1080</height>

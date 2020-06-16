@@ -34,6 +34,7 @@ public class NeGuiRow {
 		guiElement.setWidth(150);
 		guiElement.setHeight(400);
 		guiElement.setScale(1);
+		guiElement.load("assets\\row.png");
 		guiElement.move(x, y);
 	}
 	
